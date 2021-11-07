@@ -1,24 +1,4 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
-//using System.Threading.Tasks;
-//using Microsoft.Office.Interop.Excel;
-//using Excel = Microsoft.Office.Interop.Excel;
-
-//namespace ExcelHelper
-//{
-//    class Program
-//    {
-//        static void Main(string[] args)
-//        {
-//            Application excel = new Application();
-//            Workbook wb = null;
-//        }
-//    }
-//}
-
-using System;
+﻿using System;
 using System.IO;
 using System.Runtime.InteropServices;
 using Microsoft.Office.Interop.Excel;
@@ -26,6 +6,7 @@ using Excel = Microsoft.Office.Interop.Excel;
 
 namespace ExcelHelper
 {
+    //"C:\\Users\\Pepe\\Desktop\\Частоты1.xlsx"
     class Program
     {
         static string MakePath(string path)
@@ -34,51 +15,24 @@ namespace ExcelHelper
         }
         static void Main(string[] args)
         {
-            //ExcelWorker ew = new ExcelWorker();
-            using (ExcelWorker ew = new ExcelWorker())
-            {
-                ew.Open(MakePath("test1.xlsx"));
-                ew.NewSheet("aboba2");
-                //ew.SelectSheet("Лист7");
+            //Console.WriteLine($"Current directory is '{Environment.CurrentDirectory}'");
 
-                //ew.SaveAs(); 
-            }
-            //ew.Close();
+            //string path = Path.GetFullPath(@"..\..\ExcelTables\Частоты.xlsx");
+            //Console.WriteLine($"'..\\Debug' resolves to {path}");
 
-            //ExcelWorker ew = new ExcelWorker(Directory.GetCurrentDirectory() + "\\" + "test.xlsx");
-
-            //ew.Open(0);
-
-            //string[,] res = new string[5, 5];
-            //for (int i = 0; i < 5; i++)
-            //{
-            //    for (int j = 0; j < 5; j++)
-            //    {
-            //        res[i, j] = ew.GetCell(i, j).ToString();
-            //        Console.Write(res[i,j] + "\t");
-            //    }
-            //    Console.WriteLine();
-            //}
-
-
-            //Console.WriteLine(ew.GetCell(0, 0).ToString());
-            //ew.SetCell(1, 0, "test01");
-
-            //ew.Close();
-            
-
-            
             //Console.ReadKey();
-        }
-        private static void KillExcel()
-        {
-            System.Diagnostics.Process[] PROC = System.Diagnostics.Process.GetProcessesByName("EXCEL");
-            foreach (System.Diagnostics.Process PK in PROC)
+
+
+            using (ExcelWorker ew2 = new ExcelWorker(Path.GetFullPath(@"..\..\ExcelTables\Частоты.xlsx")))
             {
-                if (PK.MainWindowTitle.Length == 0)
+                ew2.AddWordEntry(new WordInfo
                 {
-                    PK.Kill();
-                }
+                    Association = "клетка",
+                    Word = "буба",
+                    Frequency = 1,
+                    FSem = 1,
+                    FAss = 1
+                });
             }
         }
     }

@@ -18,6 +18,7 @@ namespace ExcelHelper
         protected Workbook _workbook;
         protected Worksheet _worksheet;
         protected string _path;
+        protected string _password = "59Kk{Mu.@j";
 
         public event System.Action Closing;
         public event System.Action Closed;
@@ -52,6 +53,57 @@ namespace ExcelHelper
             _excel = new Application();
 
             Loaded?.Invoke();
+        }
+
+        /// <summary>
+        /// Защищает вкладку от изменений
+        /// </summary>
+        public void ProtectSheet()
+        {
+            _worksheet.Protect();
+        }
+        /// <summary>
+        /// Защищает все вкладки в документе
+        /// </summary>
+        public void ProtectAllSheets()
+        {
+            foreach (Worksheet sheet in _workbook.Worksheets)
+            {
+                sheet.Protect(_password);
+            }
+        }
+        /// <summary>
+        /// Защищает вкладку от изменений
+        /// </summary>
+        /// <param name="password">Пароль</param>
+        public void ProtectSheet(string password)
+        {
+            _worksheet.Protect(password);
+        }
+        /// <summary>
+        /// Разрешает изменения во вкладке
+        /// </summary>
+        public void UnprotectSheet()
+        {
+            _worksheet.Unprotect();
+        }
+        /// <summary>
+        /// Разрешает изменения во всех вкладках
+        /// </summary>
+        public void UnprotectAllSheets()
+        {
+            foreach (Worksheet sheet in _workbook.Worksheets)
+            {
+                sheet.Unprotect(_password);
+            }
+        }
+        /// <summary>
+        /// Разрешает изменения во вкладке
+        /// </summary>
+        /// <param name="password">Пароль</param>
+        public void UnprotectSheet(string password)
+        {
+            _worksheet.Unprotect(password);
         }
 
         /// <summary>
@@ -218,6 +270,102 @@ namespace ExcelHelper
             {
                 Logger.Log(e);
             }
+        }
+        /// <summary>
+        /// Читает массив клеток в заданном диапазоне
+        /// </summary>
+        /// <param name="startx">Строка начала</param>
+        /// <param name="starty">Строка окончания</param>
+        /// <param name="endx">Столбец начала</param>
+        /// <param name="endy">Столбец окончания</param>
+        /// <returns>Двумерный массив значений клеток</returns>
+        public object[,] GetRange(int startx, int starty, int endx, int endy)
+        {
+            Range rg = (Range)_worksheet.Range[_worksheet.Cells[++startx, ++starty], _worksheet.Cells[++endx, ++endy]];
+
+            return rg.Value2;
+        }
+        public string[,] GetRangeString(int startx, int starty, int endx, int endy)
+        {
+            object[,] tmp = GetRange(startx, starty, endx, endy);
+
+            string[,] res = new string[endx - startx + 1, endy - starty + 1];
+            for (int i = 0; i <= endx - startx; i++)
+            {
+                for (int j = 0; j <= endy - starty; j++)
+                {
+                    res[i, j] = tmp[i + 1, j + 1]?.ToString() ?? "";
+                }
+            }
+            return res;
+        }
+        /// <summary>
+        /// Присваивает новые значения клеткам в заданном диапазоне
+        /// </summary>
+        /// <param name="startx">Строка начала</param>
+        /// <param name="starty">Строка окончания</param>
+        /// <param name="endx">Столбец начала</param>
+        /// <param name="endy">Столбец окончания</param>
+        /// <param name="data">Матрица значений</param>
+        public void SetRange(int startx, int starty, int endx, int endy, object[,] data)
+        {
+            Range rg = (Range)_worksheet.Range[_worksheet.Cells[++startx, ++starty], _worksheet.Cells[++endx, ++endy]];
+
+            rg.Value2 = data;
+        }
+        /// <summary>
+        /// Присваивает новые значения клеткам в заданном диапазоне
+        /// </summary>
+        /// <param name="startx">Строка начала</param>
+        /// <param name="starty">Столбец окончания</param>
+        /// <param name="data">Матрица значений</param>
+        public void SetRange(int startx, int starty, object[,] data)
+        {
+            int endx = data.GetLength(0);
+            int endy = data.GetLength(1);
+            Range rg = (Range)_worksheet.Range[_worksheet.Cells[startx + 1, starty + 1], _worksheet.Cells[endx + startx, endy + starty]];
+
+            rg.Value2 = data;
+        }
+        /// <summary>
+        /// Добавляет новую строку в конец заданного столбца
+        /// </summary>
+        /// <param name="column">Столбец</param>
+        /// <param name="data">Строка</param>
+        public void AddRow(int column, object[] data)
+        {
+            int c = 1;
+            //var h = ;
+            while (_worksheet.Cells[c, column + 1].Value2 != null)
+            {
+                c++;
+            }
+            int x = data.GetLength(0);
+
+            Range rg = (Range)_worksheet.Range[_worksheet.Cells[c, column + 1], _worksheet.Cells[c, column + x]];
+
+            rg.Value2 = data;
+        }
+        /// <summary>
+        /// Вставляет строку
+        /// </summary>
+        /// <param name="column">Строка начала</param>
+        /// <param name="row">Столбец начала</param>
+        /// <param name="data">Строка для вставки</param>
+        public void InsertRow(int column, int row, object[] data)
+        {
+            InsertBlankRow(row);
+
+            int x = data.GetLength(0);
+            Range rg = (Range)_worksheet.Range[_worksheet.Cells[row + 1, column + 1], _worksheet.Cells[row + 1, column + x]];
+
+            rg.Value2 = data;
+        }
+        private void InsertBlankRow(int row)
+        {
+            Range _range = (Range)_worksheet.Rows[row + 1, Type.Missing];
+            _range.Select();
+            _range.Insert(XlInsertShiftDirection.xlShiftDown, Type.Missing);
         }
     }
 }

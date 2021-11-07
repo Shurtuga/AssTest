@@ -45,12 +45,15 @@
   <ItemGroup>
     <Compile Include="ExcelWorker.cs" />
     <Compile Include="ExcelWorkerBase.cs" />
+    <Compile Include="IDBWorker.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="ExcelTables\Результаты.xlsx" />
+    <None Include="ExcelTables\Частоты.xlsx" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="Microsoft.Office.Core">
