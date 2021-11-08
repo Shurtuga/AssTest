@@ -108,5 +108,11 @@
       <Name>ExcelHelper</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="VisualTabs\VisualResourses\EnterPic.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="VisualTabs\VisualResourses\EnterPic2.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

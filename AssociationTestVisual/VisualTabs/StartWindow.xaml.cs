@@ -24,10 +24,15 @@ namespace AssociationTestVisual.VisualTabs
             InitializeComponent();
         }
 
-        private void Continue_Click(object sender, RoutedEventArgs e)
+        private void button_Click(object sender, RoutedEventArgs e)
         {
-            Input inputWind = new Input();
-            inputWind.Show();
+
+        }
+
+        private void ContinueButton_Click(object sender, RoutedEventArgs e)
+        {
+            Input inputWindow  = new Input();
+            inputWindow.Show();
             this.Close();
         }
     }

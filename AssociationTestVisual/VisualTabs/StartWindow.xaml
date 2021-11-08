@@ -20,8 +20,8 @@
                 <ComboBox Width="310" Margin="5" HorizontalAlignment="Right" Height="35" FontSize="25"/>
             </DockPanel>
         </StackPanel>
-        <Button x:Name="button" Content="Продолжить" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Bottom" Width="200" Height="40" FontSize="25" Click="Continue_Click"/>
-        <Button x:Name="button1" Content="Редактирование" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Bottom" Width="200" Height="40" FontSize="25"/>
+        <Button x:Name="ContinueButton" Content="Продолжить" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Bottom" Width="200" Height="40" FontSize="25" Click="ContinueButton_Click"/>
+        <Button x:Name="RedactButton" Content="Редактирование" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Bottom" Width="200" Height="40" FontSize="25"/>
         <TextBlock x:Name="textBlock" Margin="5" HorizontalAlignment="Left" Text="Введите данные тестируемого" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="35"/>
 
     </Grid>
