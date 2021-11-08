@@ -1,22 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+﻿using System.Windows;
+using ExcelHelper;
 
 namespace AssociationTestVisual.VisualTabs
 {
     /// <summary>
     /// Логика взаимодействия для Window2.xaml
     /// </summary>
+
     public partial class StartWindow : Window
     {
         public StartWindow()
@@ -24,14 +14,13 @@ namespace AssociationTestVisual.VisualTabs
             InitializeComponent();
         }
 
-        private void button_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void ContinueButton_Click(object sender, RoutedEventArgs e)
         {
-            Input inputWindow  = new Input();
+            if (FIOBox.Text.Length == 0) { MessageBox.Show("Поле ФИО или ID не должно быть пустым!!!"); return; }
+           // else
+            //if (GROUPBox.Text.Length == 0) { MessageBox.Show("Вы должны выбрать группу тестируемого!!!"); return; }
+            PersonResults pr = new PersonResults() { Name = FIOBox.Text, Group = GROUPBox.Text };
+            Input inputWindow = new Input(pr);
             inputWindow.Show();
             this.Close();
         }

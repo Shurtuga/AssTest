@@ -16,8 +16,15 @@
             <TabItem Header="CurWord" Width="100" Height="30" Margin="5,0,0,0">
                 <DockPanel VerticalAlignment="Stretch" Height="Auto" LastChildFill="True" >
                     <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Height="40">
-                        <TextBox  TextWrapping="WrapWithOverflow" FontSize="15" Height="26" Margin="5,5,0,5" Width="275" HorizontalAlignment="Left"/>
+                        <TextBox x:Name="WordsInput"  TextWrapping="WrapWithOverflow" FontSize="15" Height="26" Margin="5,5,0,5" Width="275" HorizontalAlignment="Left" KeyUp="EnterWord"/>
                         <Image Source="\VisualTabs\VisualResourses\EnterPic2.png" Margin="1,6,0,6" Stretch="UniformToFill"/>
+                        <ListBox Name="UnsortedWordsList" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                        </ListBox>
                     </StackPanel>
                     
                     <ListView VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" Height="Auto">

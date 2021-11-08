@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using ExcelHelper;
 
 namespace AssociationTestVisual.VisualTabs
 {
@@ -19,9 +20,23 @@ namespace AssociationTestVisual.VisualTabs
     /// </summary>
     public partial class Input : Window
     {
-        public Input()
+        public PersonResults results;
+        public Input( PersonResults res)
         {
             InitializeComponent();
+            results = res;
+        }
+        public void WordEntered()
+        {
+            UnsortedWordsList.Items.Add(new TextBlock() { Text = WordsInput.Text});
+            WordsInput.Clear();
+        }
+        private void EnterWord(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+            {
+                WordEntered();
+            }
         }
     }
 }
