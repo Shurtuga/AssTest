@@ -1,11 +1,11 @@
-﻿<Window x:Class="AssociationTestVisual.VisualTabs.Window1"
+﻿<Window x:Class="AssociationTestVisual.VisualTabs.Input"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AssociationTestVisual.VisualTabs"
         mc:Ignorable="d"
-        Title="Window1" Height="450" Width="800">
+        Title="Window1" Height="700" Width="1000">
     <Window.Resources>
         <StackPanel x:Key="Col">
             <TextBlock/>
@@ -13,15 +13,19 @@
     </Window.Resources>
     <Grid>
         <TabControl x:Name="WordItem" TabStripPlacement="Left">
-            <TabItem Header="TabItem" Width="100" Height="30" Margin="5,0,0,0">
+            <TabItem Header="CurWord" Width="100" Height="30" Margin="5,0,0,0">
                 <DockPanel VerticalAlignment="Stretch" Height="Auto" LastChildFill="True" >
-                    <TextBox DockPanel.Dock="Top" TextWrapping="WrapWithOverflow" FontSize="15" Height="26" Margin="5" Width="275" HorizontalAlignment="Left"/>
+                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Height="40">
+                        <TextBox  TextWrapping="WrapWithOverflow" FontSize="15" Height="26" Margin="5,5,0,5" Width="275" HorizontalAlignment="Left"/>
+                        <Image Source="\VisualTabs\VisualResourses\EnterPic2.png" Margin="1,6,0,6" Stretch="UniformToFill"/>
+                    </StackPanel>
+                    
                     <ListView VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" Height="Auto">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Stretch" Height="Auto">
                             <StackPanel Margin="10" VerticalAlignment="Stretch" Height="Auto">
-                                <TextBlock Height="30" Text="awawa"/>
-                                <TextBlock Height="30" Text="awawa"/>
-                                <TextBlock Height="30" Text="awawa"/>
+                                <TextBlock Height="50" Text="awawawawawa" FontSize="30"/>
+                                <TextBlock Height="50" Text="awawawawawa" FontSize="30"/>
+                                <TextBlock Height="50" Text="awawawawawa" FontSize="30"/>
                             </StackPanel>
                         </StackPanel>
                     </ListView>

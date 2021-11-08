@@ -17,11 +17,23 @@ namespace AssociationTestVisual.VisualTabs
     /// <summary>
     /// Логика взаимодействия для Window2.xaml
     /// </summary>
-    public partial class Window2 : Window
+    public partial class StartWindow : Window
     {
-        public Window2()
+        public StartWindow()
         {
             InitializeComponent();
+        }
+
+        private void button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ContinueButton_Click(object sender, RoutedEventArgs e)
+        {
+            Input inputWindow  = new Input();
+            inputWindow.Show();
+            this.Close();
         }
     }
 }

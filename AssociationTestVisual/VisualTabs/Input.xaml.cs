@@ -17,9 +17,9 @@ namespace AssociationTestVisual.VisualTabs
     /// <summary>
     /// Логика взаимодействия для Window1.xaml
     /// </summary>
-    public partial class Window1 : Window
+    public partial class Input : Window
     {
-        public Window1()
+        public Input()
         {
             InitializeComponent();
         }
