@@ -1,5 +1,7 @@
 ﻿using System.Windows;
 using ExcelHelper;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace AssociationTestVisual.VisualTabs
 {
@@ -9,9 +11,16 @@ namespace AssociationTestVisual.VisualTabs
 
     public partial class StartWindow : Window
     {
+        public GroupsList Groups = new GroupsList();
         public StartWindow()
         {
             InitializeComponent();
+            //Groups.List.Add("TestGroup");
+            //Groups.Save();
+            Groups.Load();
+            foreach (var v in Groups.List) { GROUPBox.Items.Add(v); }
+            GROUPBox.SelectedIndex = 0;
+            
         }
 
         private void ContinueButton_Click(object sender, RoutedEventArgs e)

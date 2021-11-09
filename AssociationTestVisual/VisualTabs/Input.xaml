@@ -7,18 +7,14 @@
         mc:Ignorable="d"
         Title="Window1" Height="700" Width="1000">
     <Window.Resources>
-        <StackPanel x:Key="Col">
-            <TextBlock/>
-        </StackPanel>
-    </Window.Resources>
-    <Grid>
-        <TabControl x:Name="WordItem" TabStripPlacement="Left">
-            <TabItem Header="CurWord" Width="100" Height="30" Margin="5,0,0,0">
+        <TabItem x:Key="TICOPY" x:Shared ="false"  Name ="CTI" Header="CurWord" Width="100" Height="30" Margin="5,0,0,0">
+            <StackPanel>
+                <TextBlock/>
                 <DockPanel VerticalAlignment="Stretch" Height="Auto" LastChildFill="True" >
                     <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Height="40">
-                        <TextBox x:Name="WordsInput"  TextWrapping="WrapWithOverflow" FontSize="15" Height="26" Margin="5,5,0,5" Width="275" HorizontalAlignment="Left" KeyUp="EnterWord"/>
+                        <TextBox x:Name="CWordsInput"  TextWrapping="WrapWithOverflow" FontSize="15" Height="26" Margin="5,5,0,5" Width="275" HorizontalAlignment="Left" KeyUp="EnterWord"/>
                         <Image Source="\VisualTabs\VisualResourses\EnterPic2.png" Margin="1,6,0,6" Stretch="UniformToFill"/>
-                        <ListBox Name="UnsortedWordsList" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                        <ListBox Name="CUnsortedWordsList" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
                             <ListBox.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <StackPanel Orientation="Horizontal"/>
@@ -26,17 +22,39 @@
                             </ListBox.ItemsPanel>
                         </ListBox>
                     </StackPanel>
-                    
                     <ListView VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" Height="Auto">
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Stretch" Height="Auto">
-                            <StackPanel Margin="10" VerticalAlignment="Stretch" Height="Auto">
-                                <TextBlock Height="50" Text="awawawawawa" FontSize="30"/>
-                                <TextBlock Height="50" Text="awawawawawa" FontSize="30"/>
-                                <TextBlock Height="50" Text="awawawawawa" FontSize="30"/>
-                            </StackPanel>
+                        <StackPanel Name="CCategory" Orientation="Horizontal" VerticalAlignment="Stretch" Height="Auto">
+
                         </StackPanel>
                     </ListView>
                 </DockPanel>
+            </StackPanel>
+        </TabItem>
+    </Window.Resources>
+    <Grid>
+        <TabControl Name="Tabs" TabStripPlacement="Left">
+            <TabItem Name ="TI" Header="CurWord" Width="100" Height="30" Margin="5,0,0,0">
+                <StackPanel>
+                    <TextBlock/>
+                    <DockPanel VerticalAlignment="Stretch" Height="Auto" LastChildFill="True" >
+                        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Height="40">
+                            <TextBox x:Name="WordsInput"  TextWrapping="WrapWithOverflow" FontSize="15" Height="26" Margin="5,5,0,5" Width="275" HorizontalAlignment="Left" KeyUp="EnterWord"/>
+                            <Image Source="\VisualTabs\VisualResourses\EnterPic2.png" Margin="1,6,0,6" Stretch="UniformToFill"/>
+                            <ListBox Name="UnsortedWordsList" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                            </ListBox>
+                        </StackPanel>
+                        <ListView VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" Height="Auto">
+                            <StackPanel Name="Category" Orientation="Horizontal" VerticalAlignment="Stretch" Height="Auto">
+                                
+                            </StackPanel>
+                        </ListView>
+                    </DockPanel>
+                </StackPanel>
             </TabItem>
         </TabControl>
 
