@@ -20,8 +20,8 @@ namespace AssociationTestVisual.VisualTabs
     /// </summary>
     public partial class Input : Window
     {
-        public PersonResults results;
-        public Input( PersonResults res)
+        public PersonResult results;
+        public Input( PersonResult res)
         {
             InitializeComponent();
             results = res;
