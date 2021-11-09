@@ -22,7 +22,7 @@ namespace ExcelHelper
     /// <summary>
     /// Результаты тестирования для человека
     /// </summary>
-    public class PersonResults
+    public class PersonResult
     {
         /// <summary>
         /// Группа
@@ -72,6 +72,6 @@ namespace ExcelHelper
         /// Новая запись в таблицу результатов
         /// </summary>
         /// <param name="result">Параметры для человека</param>
-        void SaveResult(PersonResults result);
+        void SaveResult(PersonResult result);
     }
 }

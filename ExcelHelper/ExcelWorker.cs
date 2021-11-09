@@ -64,7 +64,7 @@ namespace ExcelHelper
             //SetCell(c, 3, info.FAss);
         }
 
-        public void SaveResult(PersonResults result)
+        public void SaveResult(PersonResult result)
         {
             Open(_resultsBook);
             try

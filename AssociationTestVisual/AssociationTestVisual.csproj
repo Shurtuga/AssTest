@@ -59,6 +59,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="VisualTabs\Classes.cs" />
     <Compile Include="VisualTabs\Input.xaml.cs">
       <DependentUpon>Input.xaml</DependentUpon>
     </Compile>
