@@ -12,26 +12,38 @@ namespace ExcelHelper
     public class ExcelWorker : ExcelWorkerBase, IDBWorker
     {
         string _resultsBook = System.IO.Path.GetFullPath(@"..\..\ExcelTables\Результаты.xlsx");
-        public string _freqBook = System.IO.Path.GetFullPath(@"..\..\ExcelTables\Частоты.xlsx");
-
-
+        string _freqBook = System.IO.Path.GetFullPath(@"..\..\ExcelTables\Частоты.xlsx");
 
         public ExcelWorker(string path) : base(path) { }
         public ExcelWorker() : base() { }
 
-        public WordInfo GetInfo(string word, string association)
+        #region DBWorker Methods
+        public WordInfo GetWord(string word, string association)
         {
             Open(_freqBook);
             SelectSheet(association);
 
             int c = 0;
-            while (GetCell(c, 0).ToString().Trim(' ') != word)
+            string w;
+            //while ((w = GetCell(c, 0).ToString().Trim(' '))!= word || (w == ""))
+            //{
+            //    c++;
+            //}
+
+            for(; ; )
             {
-                c++;
+                w = GetCell(c, 0).ToString().Trim(' ');
+                if (w == word)
+                {
+                    break;
+                }
+                else if (w == "")
+                {
+                    return null;
+                }
             }
             return ParseRow(c);
         }
-
 
         WordInfo ParseRow(int row)
         {
@@ -45,23 +57,29 @@ namespace ExcelHelper
             };
         }
 
-        public void AddWordEntry(WordInfo info)
+        public void AddWord(WordInfo info)
         {
             Open(_freqBook);
             SelectSheet(info.Association);
 
-            AddRow(0, info.ToArray());
+            int c = 0;
+            string w;
 
-            //int c = 0;
-            //while (GetCell(c, 0).ToString().Trim(' ') != "")
-            //{
-            //    c++;
-            //}
-
-            //SetCell(c, 0, info.Word);
-            //SetCell(c, 1, info.Frequency);
-            //SetCell(c, 2, info.FSem);
-            //SetCell(c, 3, info.FAss);
+            for (; ; )
+            {
+                w = GetCell(c, 0).ToString().Trim(' ');
+                if (w == info.Word)
+                {
+                    int t = int.Parse(GetCell(c, 1).ToString());
+                    SetCell(c, 1, t + 1);
+                    break;
+                }
+                else if (w == "")
+                {
+                    AddRow(0, info.ToArray());
+                    break;
+                }
+            }
         }
 
         public void SaveResult(PersonResult result)
@@ -80,5 +98,63 @@ namespace ExcelHelper
 
             AddRow(0, result.ToStringArray());
         }
+
+        public PersonResult Calculate(PersonResult[] results)
+        {
+            double fass = 0, fsem = 0, orig = 0;
+
+            foreach (var r in results)
+            {
+                orig += r.Originality;
+                fass += r.FAss;
+                fsem += r.FSem;
+            }
+
+            orig /= 6;
+            fass /= 6;
+            fsem /= 6;
+
+            return new PersonResult
+            {
+                Name = results[0].Name,
+                Group = results[0].Group,
+                Originality = orig,
+                FAss = fass,
+                FSem = fsem
+            };
+        } 
+        #endregion
+
+        #region Async Methods
+
+        public async Task<WordInfo> GetInfoAsync(string word, string association)
+        {
+            WordInfo res = null;
+
+            await Task.Factory.StartNew(() =>
+            {
+                res = GetWord(word, association);
+            });
+
+            return res;
+        }
+
+        public async Task AddWordEntryAsync(WordInfo info)
+        {
+            await Task.Factory.StartNew(() =>
+            {
+                AddWord(info);
+            });
+        }
+
+        public async Task SaveResultAsync(PersonResult result)
+        {
+            await Task.Factory.StartNew(() =>
+            {
+                SaveResult(result);
+            });
+        }
+
+        #endregion
     }
 }
