@@ -20,9 +20,9 @@ namespace AssociationTestVisual.VisualTabs
     /// </summary>
     public partial class Input : Window
     {
-        public PersonResults results;
+        public PersonResult results;
         WordsList Words = new WordsList();
-        public Input(PersonResults res)
+        public Input(PersonResult res)
         {
             InitializeComponent();
             //Words.semanticMeanings.Add(new AssociationWord() { Word = "Клетка", Meanings = new List<string>() {"Заграждение", "Часть организма", "Геометрическая фигура", "Лестничная клетка", "Образное сравнение", "Имена собственные", "Рифмовки" } });
@@ -33,21 +33,18 @@ namespace AssociationTestVisual.VisualTabs
             //Words.semanticMeanings.Add(new AssociationWord() { Word = "Дробь", Meanings = new List<string>() { "Мелкие ядрышки", "Звуки", "Математика", "Обозначение номера дома" } });
             //Words.Save();
             Words.Load();
-            Tabs.Items.Clear();
-            foreach (var v in Words.semanticMeanings)
+            var tabs = new[] { TIFir, TISecond, TIThird, TIFourth, TIFifth, TISixth };
+            var cats = new[] { FirCategory, SecondCategory, ThirdCategory, FourthCategory, FifthCategory, SixthCategory };
+            for (int i = 0; i < 6; i++)
             {
-                TI = (TabItem) FindResource("TICOPY");
-                TI.Header = v.Word;
-                foreach (var m in v.Meanings) 
+                tabs[i].Header = Words.semanticMeanings[i].Word;
+                for (int j = 0; j < Words.semanticMeanings[i].Meanings.Count;j++)
                 {
-                    StackPanel sp = new StackPanel() { Margin = new Thickness(10, 10, 10, 10), VerticalAlignment = VerticalAlignment.Stretch };
-                    sp.Children.Add(new TextBlock() { Text = m });
-                    ((StackPanel)TI.FindName("CCategory")).Children.Add(sp);
+                    StackPanel sp = new StackPanel() {Margin = new Thickness(10,2,10,2), VerticalAlignment = VerticalAlignment.Stretch, Height = Double.NaN };
+                    sp.Children.Add(new Button() { Content = Words.semanticMeanings[i].Meanings[j], FontSize = 20 });
+                    cats[i].Children.Add(sp);
                 }
-
-                Tabs.Items.Add(TI);
             }
-            results = res;
         }
         public void WordEntered()
         {

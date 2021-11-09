@@ -28,7 +28,7 @@ namespace AssociationTestVisual.VisualTabs
             if (FIOBox.Text.Length == 0) { MessageBox.Show("Поле ФИО или ID не должно быть пустым!!!"); return; }
            // else
             //if (GROUPBox.Text.Length == 0) { MessageBox.Show("Вы должны выбрать группу тестируемого!!!"); return; }
-            PersonResults pr = new PersonResults() { Name = FIOBox.Text, Group = GROUPBox.Text };
+            PersonResult pr = new PersonResult() { Name = FIOBox.Text, Group = GROUPBox.Text };
             Input inputWindow = new Input(pr);
             inputWindow.Show();
             this.Close();

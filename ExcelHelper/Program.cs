@@ -25,7 +25,7 @@ namespace ExcelHelper
 
             using (ExcelWorker ew2 = new ExcelWorker(Path.GetFullPath(@"..\..\ExcelTables\Частоты.xlsx")))
             {
-                ew2.AddWordEntry(new WordInfo
+                ew2.AddWord(new WordInfo
                 {
                     Association = "клетка",
                     Word = "буба",

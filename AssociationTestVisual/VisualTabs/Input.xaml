@@ -7,40 +7,17 @@
         mc:Ignorable="d"
         Title="Window1" Height="700" Width="1000">
     <Window.Resources>
-        <TabItem x:Key="TICOPY" x:Shared ="false"  Name ="CTI" Header="CurWord" Width="100" Height="30" Margin="5,0,0,0">
-            <StackPanel>
-                <TextBlock/>
-                <DockPanel VerticalAlignment="Stretch" Height="Auto" LastChildFill="True" >
-                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Height="40">
-                        <TextBox x:Name="CWordsInput"  TextWrapping="WrapWithOverflow" FontSize="15" Height="26" Margin="5,5,0,5" Width="275" HorizontalAlignment="Left" KeyUp="EnterWord"/>
-                        <Image Source="\VisualTabs\VisualResourses\EnterPic2.png" Margin="1,6,0,6" Stretch="UniformToFill"/>
-                        <ListBox Name="CUnsortedWordsList" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
-                            <ListBox.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <StackPanel Orientation="Horizontal"/>
-                                </ItemsPanelTemplate>
-                            </ListBox.ItemsPanel>
-                        </ListBox>
-                    </StackPanel>
-                    <ListView VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" Height="Auto">
-                        <StackPanel Name="CCategory" Orientation="Horizontal" VerticalAlignment="Stretch" Height="Auto">
-
-                        </StackPanel>
-                    </ListView>
-                </DockPanel>
-            </StackPanel>
-        </TabItem>
     </Window.Resources>
     <Grid>
         <TabControl Name="Tabs" TabStripPlacement="Left">
-            <TabItem Name ="TI" Header="CurWord" Width="100" Height="30" Margin="5,0,0,0">
+            <TabItem Name ="TIFir" Header="CurWord" Width="100" Height="30" Margin="5,0,0,0">
                 <StackPanel>
                     <TextBlock/>
                     <DockPanel VerticalAlignment="Stretch" Height="Auto" LastChildFill="True" >
                         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Height="40">
-                            <TextBox x:Name="WordsInput"  TextWrapping="WrapWithOverflow" FontSize="15" Height="26" Margin="5,5,0,5" Width="275" HorizontalAlignment="Left" KeyUp="EnterWord"/>
+                            <TextBox x:Name="FirWordsInput"  TextWrapping="WrapWithOverflow" FontSize="15" Height="26" Margin="5,5,0,5" Width="275" HorizontalAlignment="Left" KeyUp="EnterWord"/>
                             <Image Source="\VisualTabs\VisualResourses\EnterPic2.png" Margin="1,6,0,6" Stretch="UniformToFill"/>
-                            <ListBox Name="UnsortedWordsList" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                            <ListBox Name="FirUnsortedWordsList" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
                                 <ListBox.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <StackPanel Orientation="Horizontal"/>
@@ -49,8 +26,124 @@
                             </ListBox>
                         </StackPanel>
                         <ListView VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" Height="Auto">
-                            <StackPanel Name="Category" Orientation="Horizontal" VerticalAlignment="Stretch" Height="Auto">
-                                
+                            
+                            <StackPanel Name="FirCategory" Focusable="False" Orientation="Horizontal" VerticalAlignment="Stretch" Height="Auto">
+
+                            </StackPanel>
+                        </ListView>
+                    </DockPanel>
+                </StackPanel>
+            </TabItem>
+            <TabItem Name ="TISecond" Header="CurWord" Width="100" Height="30" Margin="5,0,0,0">
+                <StackPanel>
+                    <TextBlock/>
+                    <DockPanel VerticalAlignment="Stretch" Height="Auto" LastChildFill="True" >
+                        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Height="40">
+                            <TextBox x:Name="SecondWordsInput"  TextWrapping="WrapWithOverflow" FontSize="15" Height="26" Margin="5,5,0,5" Width="275" HorizontalAlignment="Left" KeyUp="EnterWord"/>
+                            <Image Source="\VisualTabs\VisualResourses\EnterPic2.png" Margin="1,6,0,6" Stretch="UniformToFill"/>
+                            <ListBox Name="SecondUnsortedWordsList" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                            </ListBox>
+                        </StackPanel>
+                        <ListView VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" Height="Auto">
+                            <StackPanel Name="SecondCategory" Orientation="Horizontal" VerticalAlignment="Stretch" Height="Auto">
+
+                            </StackPanel>
+                        </ListView>
+                    </DockPanel>
+                </StackPanel>
+            </TabItem>
+            <TabItem Name ="TIThird" Header="CurWord" Width="100" Height="30" Margin="5,0,0,0">
+                <StackPanel>
+                    <TextBlock/>
+                    <DockPanel VerticalAlignment="Stretch" Height="Auto" LastChildFill="True" >
+                        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Height="40">
+                            <TextBox x:Name="ThirdWordsInput"  TextWrapping="WrapWithOverflow" FontSize="15" Height="26" Margin="5,5,0,5" Width="275" HorizontalAlignment="Left" KeyUp="EnterWord"/>
+                            <Image Source="\VisualTabs\VisualResourses\EnterPic2.png" Margin="1,6,0,6" Stretch="UniformToFill"/>
+                            <ListBox Name="ThirdUnsortedWordsList" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                            </ListBox>
+                        </StackPanel>
+                        <ListView VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" Height="Auto">
+                            <StackPanel Name="ThirdCategory" Orientation="Horizontal" VerticalAlignment="Stretch" Height="Auto">
+
+                            </StackPanel>
+                        </ListView>
+                    </DockPanel>
+                </StackPanel>
+            </TabItem>
+            <TabItem Name ="TIFourth" Header="CurWord" Width="100" Height="30" Margin="5,0,0,0">
+                <StackPanel>
+                    <TextBlock/>
+                    <DockPanel VerticalAlignment="Stretch" Height="Auto" LastChildFill="True" >
+                        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Height="40">
+                            <TextBox x:Name="FourthWordsInput"  TextWrapping="WrapWithOverflow" FontSize="15" Height="26" Margin="5,5,0,5" Width="275" HorizontalAlignment="Left" KeyUp="EnterWord"/>
+                            <Image Source="\VisualTabs\VisualResourses\EnterPic2.png" Margin="1,6,0,6" Stretch="UniformToFill"/>
+                            <ListBox Name="FourthUnsortedWordsList" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                            </ListBox>
+                        </StackPanel>
+                        <ListView VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" Height="Auto">
+                            <StackPanel Name="FourthCategory" Orientation="Horizontal" VerticalAlignment="Stretch" Height="Auto">
+
+                            </StackPanel>
+                        </ListView>
+                    </DockPanel>
+                </StackPanel>
+            </TabItem>
+            <TabItem Name ="TIFifth" Header="CurWord" Width="100" Height="30" Margin="5,0,0,0">
+                <StackPanel>
+                    <TextBlock/>
+                    <DockPanel VerticalAlignment="Stretch" Height="Auto" LastChildFill="True" >
+                        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Height="40">
+                            <TextBox x:Name="FifthWordsInput"  TextWrapping="WrapWithOverflow" FontSize="15" Height="26" Margin="5,5,0,5" Width="275" HorizontalAlignment="Left" KeyUp="EnterWord"/>
+                            <Image Source="\VisualTabs\VisualResourses\EnterPic2.png" Margin="1,6,0,6" Stretch="UniformToFill"/>
+                            <ListBox Name="FifthUnsortedWordsList" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                            </ListBox>
+                        </StackPanel>
+                        <ListView VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" Height="Auto">
+                            <StackPanel Name="FifthCategory" Orientation="Horizontal" VerticalAlignment="Stretch" Height="Auto">
+
+                            </StackPanel>
+                        </ListView>
+                    </DockPanel>
+                </StackPanel>
+            </TabItem>
+            <TabItem Name ="TISixth" Header="CurWord" Width="100" Height="30" Margin="5,0,0,0">
+                <StackPanel>
+                    <TextBlock/>
+                    <DockPanel VerticalAlignment="Stretch" Height="Auto" LastChildFill="True" >
+                        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Height="40">
+                            <TextBox x:Name="SixthWordsInput"  TextWrapping="WrapWithOverflow" FontSize="15" Height="26" Margin="5,5,0,5" Width="275" HorizontalAlignment="Left" KeyUp="EnterWord"/>
+                            <Image Source="\VisualTabs\VisualResourses\EnterPic2.png" Margin="1,6,0,6" Stretch="UniformToFill"/>
+                            <ListBox Name="SixthUnsortedWordsList" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                            </ListBox>
+                        </StackPanel>
+                        <ListView VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" Height="Auto">
+                            <StackPanel Name="SixthCategory" Orientation="Horizontal" VerticalAlignment="Stretch" Height="Auto">
+
                             </StackPanel>
                         </ListView>
                     </DockPanel>
