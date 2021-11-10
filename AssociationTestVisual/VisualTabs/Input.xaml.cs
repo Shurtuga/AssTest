@@ -22,6 +22,12 @@ namespace AssociationTestVisual.VisualTabs
     {
         public PersonResult results;
         WordsList Words = new WordsList();
+        List<TextBox> inpts;
+        List<ListBox> lists;
+        List<ContextMenu> menus = new List<ContextMenu>();
+        List<StackPanel> cats;
+        int counter = 0;
+
         public Input(PersonResult res)
         {
             InitializeComponent();
@@ -34,28 +40,44 @@ namespace AssociationTestVisual.VisualTabs
             //Words.Save();
             Words.Load();
             var tabs = new[] { TIFir, TISecond, TIThird, TIFourth, TIFifth, TISixth };
-            var cats = new[] { FirCategory, SecondCategory, ThirdCategory, FourthCategory, FifthCategory, SixthCategory };
+            cats = new List<StackPanel> { FirCategory, SecondCategory, ThirdCategory, FourthCategory, FifthCategory, SixthCategory };
+            inpts = new List<TextBox> { FirWordsInput, SecondWordsInput, ThirdWordsInput, FourthWordsInput, FifthWordsInput, SixthWordsInput };
+            lists = new List<ListBox> { FirUnsortedWordsList, SecondUnsortedWordsList, ThirdUnsortedWordsList, FourthUnsortedWordsList, FifthUnsortedWordsList, SixthUnsortedWordsList };
             for (int i = 0; i < 6; i++)
             {
+                ContextMenu menu = new ContextMenu();
                 tabs[i].Header = Words.semanticMeanings[i].Word;
-                for (int j = 0; j < Words.semanticMeanings[i].Meanings.Count;j++)
+                for (int j = 0; j < Words.semanticMeanings[i].Meanings.Count; j++)
                 {
-                    StackPanel sp = new StackPanel() {Margin = new Thickness(10,2,10,2), VerticalAlignment = VerticalAlignment.Stretch, Height = Double.NaN };
+                    MenuItem mi = new MenuItem() { Name = "ItName_" + i.ToString() + "_" + j.ToString(), Header = Words.semanticMeanings[i].Meanings[j] };
+                    mi.Click += Mi_Click;
+                    menu.Items.Add(mi);
+                    StackPanel sp = new StackPanel() { Margin = new Thickness(10, 2, 10, 2), VerticalAlignment = VerticalAlignment.Stretch, Height = Double.NaN };
                     sp.Children.Add(new Button() { Content = Words.semanticMeanings[i].Meanings[j], FontSize = 20 });
                     cats[i].Children.Add(sp);
                 }
+                menus.Add(menu);
             }
         }
-        public void WordEntered()
+
+        private void Mi_Click(object sender, RoutedEventArgs e)
         {
-            //    UnsortedWordsList.Items.Add(new TextBlock() { Text = WordsInput.Text});
-            //    WordsInput.Clear();
+            MenuItem mnu = sender as MenuItem;
+            string[] s = ((MenuItem)sender).Name.Split('_');
+            //добавление в выбранную категорию
+            ((StackPanel)cats[int.Parse(s[1])].Children[int.Parse(s[2])]).Children.Add(new TextBlock() { Text = ((TextBlock)((ContextMenu)mnu.Parent).PlacementTarget).Text, FontSize = 15, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center });
+            lists[int.Parse(s[1])].Items.Remove((TextBlock)((ContextMenu)mnu.Parent).PlacementTarget);
         }
+
         private void EnterWord(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Return)
             {
-                WordEntered();
+                //если незнакомое слово
+                int i = inpts.IndexOf((TextBox)sender);
+                lists[i].Items.Add(new TextBlock() { Text = inpts[i].Text, ContextMenu = menus[i] });
+                inpts[i].Text = "";
+                //иначе получаем индекс категории, добавляем в i-тый стекбокс
             }
         }
     }

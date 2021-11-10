@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<WordsList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <semanticMeanings>
+    <AssociationWord>
+      <Word>Клетка</Word>
+      <Meanings>
+        <string>Заграждение</string>
+        <string>Часть организма</string>
+        <string>Геометрическая фигура</string>
+        <string>Лестничная клетка</string>
+        <string>Образное сравнение</string>
+        <string>Имена собственные</string>
+        <string>Рифмовки</string>
+      </Meanings>
+    </AssociationWord>
+    <AssociationWord>
+      <Word>Порог</Word>
+      <Meanings>
+        <string>Брус под дверью</string>
+        <string>Начало, рубеж, граница</string>
+        <string>Вода</string>
+        <string>Рифмовка</string>
+        <string>Часть музыкального инструмента</string>
+        <string>Препятствие</string>
+        <string>Сложнопонимаемая ассоциация</string>
+      </Meanings>
+    </AssociationWord>
+    <AssociationWord>
+      <Word>Лист</Word>
+      <Meanings>
+        <string>Часть растения</string>
+        <string>Кусок материала</string>
+        <string>Единица печатного объёма</string>
+        <string>Имя собственное</string>
+        <string>Рифмовка</string>
+      </Meanings>
+    </AssociationWord>
+    <AssociationWord>
+      <Word>Ключ</Word>
+      <Meanings>
+        <string>Родник, источник</string>
+        <string>Отпирающее замки</string>
+        <string>Отвинчивающее гайки</string>
+        <string>Ключ к отгадке</string>
+        <string>Шифр, код</string>
+        <string>Имя собственное</string>
+        <string>Музыкальная грамота</string>
+      </Meanings>
+    </AssociationWord>
+    <AssociationWord>
+      <Word>Язык</Word>
+      <Meanings>
+        <string>Орган вкуса</string>
+        <string>Часть колокола</string>
+        <string>Деталь обуви</string>
+        <string>Словесное средство</string>
+        <string>Невербалика</string>
+        <string>Народ, нация</string>
+        <string>Формальный язык</string>
+        <string>Выпечка, пирожное</string>
+        <string>Блюдо, продукт</string>
+      </Meanings>
+    </AssociationWord>
+    <AssociationWord>
+      <Word>Дробь</Word>
+      <Meanings>
+        <string>Мелкие ядрышки</string>
+        <string>Звуки</string>
+        <string>Математика</string>
+        <string>Обозначение номера дома</string>
+      </Meanings>
+    </AssociationWord>
+  </semanticMeanings>
+</WordsList>

@@ -20,7 +20,7 @@ namespace AssociationTestVisual.VisualTabs
         {
             try
             {
-                using (var stream = new FileStream("Groups.xml", FileMode.OpenOrCreate))
+                using (var stream = new FileStream(@"..\..\GroupsAndWords\Groups.xml", FileMode.OpenOrCreate))
                 {
                     XmlSerializer serializer = new XmlSerializer(typeof(List<string>));
                     List = (List<string>)serializer.Deserialize(stream);
@@ -31,7 +31,7 @@ namespace AssociationTestVisual.VisualTabs
 
         public void Save()
         {
-            using (var stream = new FileStream("Groups.xml", FileMode.OpenOrCreate))
+            using (var stream = new FileStream(@"..\..\GroupsAndWords\Groups.xml", FileMode.OpenOrCreate))
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(List<string>));
                 serializer.Serialize(stream, List);
@@ -58,7 +58,7 @@ namespace AssociationTestVisual.VisualTabs
 
         public void Save()
         {
-            using (var stream = new FileStream("Words.xml", FileMode.OpenOrCreate))
+            using (var stream = new FileStream(@"..\..\GroupsAndWords\Words.xml", FileMode.OpenOrCreate))
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(WordsList), new[] {typeof(AssociationWord) } );
                 serializer.Serialize(stream, this);
@@ -66,7 +66,7 @@ namespace AssociationTestVisual.VisualTabs
         }
         public void Load()
         {
-            using (var stream = new FileStream("Words.xml", FileMode.OpenOrCreate))
+            using (var stream = new FileStream(@"..\..\GroupsAndWords\Words.xml", FileMode.OpenOrCreate))
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(WordsList), new[] { typeof(AssociationWord) });
                 WordsList wl = (WordsList)serializer.Deserialize(stream);
