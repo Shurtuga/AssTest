@@ -50,8 +50,10 @@
     <Compile Include="ExcelWorkerBase.cs" />
     <Compile Include="IDBWorker.cs" />
     <Compile Include="Logger.cs" />
+    <Compile Include="PersonResult.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WordInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

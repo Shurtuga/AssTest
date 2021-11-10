@@ -26,6 +26,7 @@ namespace ExcelHelper
         public event System.Action Loaded;
         public event System.Action SheetChanged;
 
+        #region Ctors
         /// <summary>
         /// Открывает файл по заданному пути
         /// </summary>
@@ -54,7 +55,9 @@ namespace ExcelHelper
 
             Loaded?.Invoke();
         }
+        #endregion
 
+        #region protect/unprotect
         /// <summary>
         /// Защищает вкладку от изменений
         /// </summary>
@@ -105,7 +108,9 @@ namespace ExcelHelper
         {
             _worksheet.Unprotect(password);
         }
+        #endregion
 
+        #region save(as)
         /// <summary>
         /// Сохраняет изменения в файле
         /// </summary>
@@ -121,7 +126,9 @@ namespace ExcelHelper
         {
             _workbook.SaveAs(path);
         }
+        #endregion
 
+        #region create files
         /// <summary>
         /// Создает новый файл без сохранения
         /// </summary>
@@ -140,6 +147,9 @@ namespace ExcelHelper
             _worksheet = _workbook.Worksheets[1];
             SaveAs(path);
         }
+        #endregion
+
+        #region get create select and delete sheets
         /// <summary>
         /// Создает новую вкладку в документе на первом месте
         /// </summary>
@@ -194,6 +204,23 @@ namespace ExcelHelper
         }
 
         /// <summary>
+        /// Возвращает список всех названий вкладок в файле
+        /// </summary>
+        /// <returns>Список всех названий вкладок в файле</returns>
+        public string[] GetSheetNames()
+        {
+            List<string> sh = new List<string>();
+            foreach (Worksheet ws in _workbook.Worksheets)
+            {
+                sh.Add(ws.Name);
+            }
+
+            return sh.ToArray();
+        }
+        #endregion
+
+        #region open close dispose
+        /// <summary>
         /// Открывает файл по его пути
         /// </summary>
         /// <param name="path">Путь файла</param>
@@ -243,7 +270,9 @@ namespace ExcelHelper
         {
             Close();
         }
+        #endregion
 
+        #region get/set cell
         /// <summary>
         /// Получает значение клетки по ее расположению
         /// </summary>
@@ -271,6 +300,9 @@ namespace ExcelHelper
                 Logger.Log(e);
             }
         }
+        #endregion
+
+        #region get/set range
         /// <summary>
         /// Читает массив клеток в заданном диапазоне
         /// </summary>
@@ -327,6 +359,9 @@ namespace ExcelHelper
 
             rg.Value2 = data;
         }
+        #endregion
+
+        #region get/set row
         /// <summary>
         /// Добавляет новую строку в конец заданного столбца
         /// </summary>
@@ -366,6 +401,7 @@ namespace ExcelHelper
             Range _range = (Range)_worksheet.Rows[row + 1, Type.Missing];
             _range.Select();
             _range.Insert(XlInsertShiftDirection.xlShiftDown, Type.Missing);
-        }
+        } 
+        #endregion
     }
 }

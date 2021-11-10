@@ -39,7 +39,14 @@ namespace ExcelHelper
                 }
                 else if (w == "")
                 {
-                    return null;
+                    return new WordInfo
+                    {
+                        Association = association,
+                        Word = word,
+                        Frequency = 1,
+                        FAss = -1,
+                        FSem = -1
+                    };
                 }
             }
             return ParseRow(c);
@@ -122,7 +129,82 @@ namespace ExcelHelper
                 FAss = fass,
                 FSem = fsem
             };
-        } 
+        }
+
+        public PersonResult Calculate(string name, string group, List<WordInfo> results)
+        {
+            Dictionary<string, List<int>[]> raspr = new Dictionary<string, List<int>[]>();
+
+            foreach (var r in results)
+            {
+                string t = r.Association;
+
+                if (raspr.ContainsKey(t))
+                {
+                    int a1 = r.FAss, a2 = r.FSem, a3 = r.Frequency;
+
+                    if (raspr[t][0].Contains(a1))
+                    {
+                        raspr[t][0].Add(a1);
+                    }
+                    if (raspr[t][1].Contains(a2))
+                    {
+                        raspr[t][1].Add(a2);
+                    }
+                    if (raspr[t][2].Contains(a3))
+                    {
+                        raspr[t][2].Add(a3);
+                    }
+                }
+                else
+                {
+                    raspr.Add(t, new List<int>[]
+                    {
+                        new List<int>{r.FAss},
+                        new List<int>{r.FSem},
+                        new List<int>{r.Frequency}
+                    });
+                }
+            }
+
+            int cnt = 0;
+            foreach (var i in raspr)
+            {
+                cnt += (i.Value[0]).Count;
+            }
+
+            double fass = cnt / raspr.Count;
+
+            cnt = 0;
+            foreach (var i in raspr)
+            {
+                cnt += (i.Value[1]).Count;
+            }
+
+            double fsem = cnt / raspr.Count;
+
+            double orig = 0;
+            foreach (var i in raspr)
+            {
+                double origt = 0;
+                foreach (var j in i.Value[2])
+                {
+                    origt += j;
+                }
+                orig += origt / i.Value[2].Count;
+            }
+
+            orig /= raspr.Count;
+
+            return new PersonResult
+            {
+                Name = name,
+                Group = group,
+                FAss = fass,
+                FSem = fsem,
+                Originality = orig
+            };
+        }
         #endregion
 
         #region Async Methods
