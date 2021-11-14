@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using ExcelHelper;
+using System.IO;
 
 namespace AssociationTestVisual.VisualTabs
 {
@@ -20,13 +21,15 @@ namespace AssociationTestVisual.VisualTabs
     /// </summary>
     public partial class Input : Window
     {
-        public PersonResult results;
+        PersonResult results;
         WordsList Words = new WordsList();
         List<TextBox> inpts;
         List<ListBox> lists;
         List<ContextMenu> menus = new List<ContextMenu>();
         List<StackPanel> cats;
-        int counter = 0;
+        List<WordInfo> wordInfos = new List<WordInfo>();
+        List<TabItem> tabs;
+        ExcelWorker Eww = new ExcelWorker(System.IO.Path.GetFullPath(@"..\..\..\ExcelHelper\ExcelTables\Частоты.xlsx"));
 
         public Input(PersonResult res)
         {
@@ -39,7 +42,8 @@ namespace AssociationTestVisual.VisualTabs
             //Words.semanticMeanings.Add(new AssociationWord() { Word = "Дробь", Meanings = new List<string>() { "Мелкие ядрышки", "Звуки", "Математика", "Обозначение номера дома" } });
             //Words.Save();
             Words.Load();
-            var tabs = new[] { TIFir, TISecond, TIThird, TIFourth, TIFifth, TISixth };
+            results = res;
+            tabs = new List<TabItem>{ TIFir, TISecond, TIThird, TIFourth, TIFifth, TISixth };
             cats = new List<StackPanel> { FirCategory, SecondCategory, ThirdCategory, FourthCategory, FifthCategory, SixthCategory };
             inpts = new List<TextBox> { FirWordsInput, SecondWordsInput, ThirdWordsInput, FourthWordsInput, FifthWordsInput, SixthWordsInput };
             lists = new List<ListBox> { FirUnsortedWordsList, SecondUnsortedWordsList, ThirdUnsortedWordsList, FourthUnsortedWordsList, FifthUnsortedWordsList, SixthUnsortedWordsList };
@@ -75,10 +79,27 @@ namespace AssociationTestVisual.VisualTabs
             {
                 //если незнакомое слово
                 int i = inpts.IndexOf((TextBox)sender);
-                lists[i].Items.Add(new TextBlock() { Text = inpts[i].Text, ContextMenu = menus[i] });
+                wordInfos.Add(Eww.GetWord(inpts[i].Text, tabs[i].Header.ToString()));
+                if (wordInfos.Last().FSem !=-1)
+                {
+                    //добавление в выбранную категорию
+                    ((StackPanel)cats[i].Children[wordInfos.Last().FSem-1]).Children.Add(new TextBlock() { Text = wordInfos.Last().Word });
+                }
+                else lists[i].Items.Add(new TextBlock() { Text = inpts[i].Text, ContextMenu = menus[i] });
                 inpts[i].Text = "";
                 //иначе получаем индекс категории, добавляем в i-тый стекбокс
             }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            for (int i = 0; i<6; i++) 
+            {
+                if (lists[i].Items.Count !=0) { MessageBox.Show("Необходимо распределить ассоциации к слову "+tabs[i].Header.ToString()); return; } 
+            }
+            CatsSortWindow CatsSort = new CatsSortWindow(results, wordInfos, Eww, Words);
+            CatsSort.Show();
+            this.Close();
         }
     }
 }

@@ -63,8 +63,14 @@
     <Compile Include="VisualTabs\Input.xaml.cs">
       <DependentUpon>Input.xaml</DependentUpon>
     </Compile>
+    <Compile Include="VisualTabs\ResultWindow.xaml.cs">
+      <DependentUpon>ResultWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="VisualTabs\StartWindow.xaml.cs">
       <DependentUpon>StartWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="VisualTabs\CatsSortWindow.xaml.cs">
+      <DependentUpon>CatsSortWindow.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -98,7 +104,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="VisualTabs\ResultWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="VisualTabs\StartWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="VisualTabs\CatsSortWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

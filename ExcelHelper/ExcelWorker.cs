@@ -11,8 +11,8 @@ namespace ExcelHelper
     /// </summary>
     public class ExcelWorker : ExcelWorkerBase, IDBWorker
     {
-        string _resultsBook = System.IO.Path.GetFullPath(@"..\..\ExcelTables\Результаты.xlsx");
-        string _freqBook = System.IO.Path.GetFullPath(@"..\..\ExcelTables\Частоты.xlsx");
+        string _resultsBook = System.IO.Path.GetFullPath(@"..\..\..\ExcelHelper\ExcelTables\Результаты.xlsx");
+        string _freqBook = System.IO.Path.GetFullPath(@"..\..\..\ExcelHelper\ExcelTables\Частоты.xlsx");
 
         public ExcelWorker(string path) : base(path) { }
         public ExcelWorker() : base() { }
@@ -48,6 +48,7 @@ namespace ExcelHelper
                         FSem = -1
                     };
                 }
+                c++;
             }
             return ParseRow(c);
         }
@@ -86,6 +87,7 @@ namespace ExcelHelper
                     AddRow(0, info.ToArray());
                     break;
                 }
+                c++;
             }
         }
 
