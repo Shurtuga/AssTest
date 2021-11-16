@@ -16,7 +16,7 @@
         /// <summary>
         /// Беглость
         /// </summary>
-        public int Speed { get; set; }
+        public double Speed { get; set; }
         /// <summary>
         /// Оригинальность
         /// </summary>

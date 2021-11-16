@@ -11,8 +11,13 @@ namespace ExcelHelper
     /// </summary>
     public class ExcelWorker : ExcelWorkerBase, IDBWorker
     {
-        string _resultsBook = System.IO.Path.GetFullPath(@"..\..\ExcelTables\Результаты.xlsx");
-        string _freqBook = System.IO.Path.GetFullPath(@"..\..\ExcelTables\Частоты.xlsx");
+        //string _resultsBook = System.IO.Path.GetFullPath(@"..\..\ExcelTables\Результаты.xlsx");
+        //string _freqBook = System.IO.Path.GetFullPath(@"..\..\ExcelTables\Частоты.xlsx");
+
+        string _resultsBook = System.IO.Path.GetFullPath(
+            @"C:\Users\Pepe\source\repos\Visual Studio Projects\ExcelHelper\ExcelHelper\ExcelTables\Результаты.xlsx");
+        string _freqBook = System.IO.Path.GetFullPath(
+            @"C:\Users\Pepe\source\repos\Visual Studio Projects\ExcelHelper\ExcelHelper\ExcelTables\Частоты.xlsx");
 
         public ExcelWorker(string path) : base(path) { }
         public ExcelWorker() : base() { }
@@ -48,6 +53,7 @@ namespace ExcelHelper
                         FSem = -1
                     };
                 }
+                c++;
             }
             return ParseRow(c);
         }
@@ -86,6 +92,7 @@ namespace ExcelHelper
                     AddRow(0, info.ToArray());
                     break;
                 }
+                c++;
             }
         }
 
@@ -143,18 +150,16 @@ namespace ExcelHelper
                 {
                     int a1 = r.FAss, a2 = r.FSem, a3 = r.Frequency;
 
-                    if (raspr[t][0].Contains(a1))
+                    if (!raspr[t][0].Contains(a1))
                     {
                         raspr[t][0].Add(a1);
                     }
-                    if (raspr[t][1].Contains(a2))
+                    if (!raspr[t][1].Contains(a2))
                     {
                         raspr[t][1].Add(a2);
                     }
-                    if (raspr[t][2].Contains(a3))
-                    {
-                        raspr[t][2].Add(a3);
-                    }
+                    raspr[t][2].Add(a3);
+                    raspr[t][3].Add(1);
                 }
                 else
                 {
@@ -162,7 +167,8 @@ namespace ExcelHelper
                     {
                         new List<int>{r.FAss},
                         new List<int>{r.FSem},
-                        new List<int>{r.Frequency}
+                        new List<int>{r.Frequency},
+                        new List<int>{1}
                     });
                 }
             }
@@ -173,7 +179,7 @@ namespace ExcelHelper
                 cnt += (i.Value[0]).Count;
             }
 
-            double fass = cnt / raspr.Count;
+            double fass = (double)cnt / raspr.Count;
 
             cnt = 0;
             foreach (var i in raspr)
@@ -181,7 +187,15 @@ namespace ExcelHelper
                 cnt += (i.Value[1]).Count;
             }
 
-            double fsem = cnt / raspr.Count;
+            double fsem = (double)cnt / raspr.Count;
+
+            cnt = 0;
+            foreach (var i in raspr)
+            {
+                cnt += (i.Value[3]).Count;
+            }
+
+            double speed = (double)cnt / raspr.Count;
 
             double orig = 0;
             foreach (var i in raspr)
@@ -195,11 +209,13 @@ namespace ExcelHelper
             }
 
             orig /= raspr.Count;
+            orig = Math.Round(orig);
 
             return new PersonResult
             {
                 Name = name,
                 Group = group,
+                Speed = speed,
                 FAss = fass,
                 FSem = fsem,
                 Originality = orig
