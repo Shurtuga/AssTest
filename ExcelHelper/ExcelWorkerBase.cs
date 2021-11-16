@@ -12,13 +12,13 @@ namespace ExcelHelper
     /// <summary>
     /// Базовый класс для работы с Microsoft Excel
     /// </summary>
-    public abstract class ExcelWorkerBase : IDisposable
+    public class ExcelWorkerBase : IDisposable
     {
-        protected Application _excel;
-        protected Workbook _workbook;
-        protected Worksheet _worksheet;
-        protected string _path;
-        protected string _password = "59Kk{Mu.@j";
+        internal Application _excel;
+        internal Workbook _workbook;
+        internal Worksheet _worksheet;
+        internal string _path;
+        internal string _password = "59Kk{Mu.@j";
 
         public event System.Action Closing;
         public event System.Action Closed;

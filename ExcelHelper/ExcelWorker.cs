@@ -9,7 +9,7 @@ namespace ExcelHelper
     /// <summary>
     /// Класс для работы с Microsoft Excel
     /// </summary>
-    public class ExcelWorker : ExcelWorkerBase, IDBWorker
+    public class ExcelWorker : IDBWorker, IDisposable
     {
         //string _resultsBook = System.IO.Path.GetFullPath(@"..\..\ExcelTables\Результаты.xlsx");
         //string _freqBook = System.IO.Path.GetFullPath(@"..\..\ExcelTables\Частоты.xlsx");
@@ -19,14 +19,40 @@ namespace ExcelHelper
         string _freqBook = System.IO.Path.GetFullPath(
             @"C:\Users\Pepe\source\repos\Visual Studio Projects\ExcelHelper\ExcelHelper\ExcelTables\Частоты.xlsx");
 
-        public ExcelWorker(string path) : base(path) { }
-        public ExcelWorker() : base() { }
+        ExcelWorkerBase _ewbFreq;
+        ExcelWorkerBase _ewbRes;
+
+        #region ctors
+        public ExcelWorker(string path)
+        {
+            _ewbFreq = new ExcelWorkerBase(_freqBook);
+            _ewbRes = new ExcelWorkerBase(_resultsBook);
+        }
+        public ExcelWorker()
+        {
+            _ewbFreq = new ExcelWorkerBase(_freqBook);
+            _ewbRes = new ExcelWorkerBase(_resultsBook);
+        }
+        #endregion
+
+        #region !!!need to be removed
+        public void Close()
+        {
+            _ewbFreq.Close();
+            _ewbRes.Close();
+        }
+
+        public void Dispose()
+        {
+            Close();
+        } 
+        #endregion
 
         #region DBWorker Methods
         public WordInfo GetWord(string word, string association)
         {
-            Open(_freqBook);
-            SelectSheet(association);
+            //Open(_freqBook);
+            _ewbFreq.SelectSheet(association);
 
             int c = 0;
             string w;
@@ -37,7 +63,7 @@ namespace ExcelHelper
 
             for(; ; )
             {
-                w = GetCell(c, 0).ToString().Trim(' ');
+                w = _ewbFreq.GetCell(c, 0).ToString().Trim(' ');
                 if (w == word)
                 {
                     break;
@@ -62,34 +88,34 @@ namespace ExcelHelper
         {
             return new WordInfo()
             {
-                Association = _worksheet.Name,
-                Word = GetCell(row, 0).ToString(),
-                Frequency = int.Parse(GetCell(row, 1).ToString()),
-                FSem = int.Parse(GetCell(row, 2).ToString()),
-                FAss = int.Parse(GetCell(row, 3).ToString())
+                Association = _ewbFreq._worksheet.Name,
+                Word = _ewbFreq.GetCell(row, 0).ToString(),
+                Frequency = int.Parse(_ewbFreq.GetCell(row, 1).ToString()),
+                FSem = int.Parse(_ewbFreq.GetCell(row, 2).ToString()),
+                FAss = int.Parse(_ewbFreq.GetCell(row, 3).ToString())
             };
         }
 
         public void AddWord(WordInfo info)
         {
-            Open(_freqBook);
-            SelectSheet(info.Association);
+            //Open(_freqBook);
+            _ewbFreq.SelectSheet(info.Association);
 
             int c = 0;
             string w;
 
             for (; ; )
             {
-                w = GetCell(c, 0).ToString().Trim(' ');
+                w = _ewbFreq.GetCell(c, 0).ToString().Trim(' ');
                 if (w == info.Word)
                 {
-                    int t = int.Parse(GetCell(c, 1).ToString());
-                    SetCell(c, 1, t + 1);
+                    int t = int.Parse(_ewbFreq.GetCell(c, 1).ToString());
+                    _ewbFreq.SetCell(c, 1, t + 1);
                     break;
                 }
                 else if (w == "")
                 {
-                    AddRow(0, info.ToArray());
+                    _ewbFreq.AddRow(0, info.ToArray());
                     break;
                 }
                 c++;
@@ -98,19 +124,19 @@ namespace ExcelHelper
 
         public void SaveResult(PersonResult result)
         {
-            Open(_resultsBook);
+            //Open(_resultsBook);
             try
             {
-                SelectSheet(result.Group);
+                _ewbRes.SelectSheet(result.Group);
             }
             catch (Exception)
             {
-                NewSheet(result.Group);
-                SelectSheet(result.Group);
-                AddRow(0, new object[] { "Имя", "Беглость", "Оригинальность", "ГСем", "ГАсс" });
+                _ewbRes.NewSheet(result.Group);
+                _ewbRes.SelectSheet(result.Group);
+                _ewbRes.AddRow(0, new object[] { "Имя", "Беглость", "Оригинальность", "ГСем", "ГАсс" });
             }
 
-            AddRow(0, result.ToStringArray());
+            _ewbRes.AddRow(0, result.ToStringArray());
         }
 
         public PersonResult Calculate(PersonResult[] results)
