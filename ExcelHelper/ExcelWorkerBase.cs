@@ -156,7 +156,7 @@ namespace ExcelHelper
         public void NewSheet()
         {
             //Worksheet tmp = _workbook.Worksheets.Add(After: _workbook.Worksheets[_workbook.Worksheets.Count]);
-            Worksheet tmp = _workbook.Worksheets.Add();
+            Worksheet _ = _workbook.Worksheets.Add();
         }
         /// <summary>
         /// Создает новуу вкладку с заданным именем
