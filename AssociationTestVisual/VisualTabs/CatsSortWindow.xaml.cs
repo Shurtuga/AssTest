@@ -79,6 +79,7 @@ namespace AssociationTestVisual.VisualTabs
             {
                 if (lists[i].Items.Count !=0) { MessageBox.Show("Необходимо распределить ассоциации к слову "+tabs[i].Header.ToString()); return; }
             }
+            res = Eww.Calculate(res.Name, res.Group,wordInfos);
             ResultWindow rw = new ResultWindow(res);//сюда передать итоговый резалт
             rw.Show();
             this.Close();

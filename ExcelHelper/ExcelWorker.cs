@@ -15,9 +15,9 @@ namespace ExcelHelper
         //string _freqBook = System.IO.Path.GetFullPath(@"..\..\ExcelTables\Частоты.xlsx");
 
         string _resultsBook = System.IO.Path.GetFullPath(
-            @"C:\Users\Pepe\source\repos\Visual Studio Projects\ExcelHelper\ExcelHelper\ExcelTables\Результаты.xlsx");
+            @"C:\Users\User\source\repos\associationstest\ExcelHelper\ExcelTables\Результаты.xlsx");
         string _freqBook = System.IO.Path.GetFullPath(
-            @"C:\Users\Pepe\source\repos\Visual Studio Projects\ExcelHelper\ExcelHelper\ExcelTables\Частоты.xlsx");
+            @"C:\Users\User\source\repos\associationstest\ExcelHelper\ExcelTables\Частоты.xlsx");
 
         ExcelWorkerBase _ewbFreq;
         ExcelWorkerBase _ewbRes;

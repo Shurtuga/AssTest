@@ -49,7 +49,7 @@ namespace AssociationTestVisual.VisualTabs
     {
         public static List<string> assTypes = new List<string>() {"Ассоциации по сходству", "Ассоциация по контрасту", 
             "Ассоциация по смежности в пространстве или времени", "Причинно-следственная ассоциация", "Ассоциация целое-часть",
-            "Ассоциация-определение", "Сложнопонимаемая ассоциация" };
+            "Ассоциация-определение", "Сложнопонимаемая ассоциация", "Свойство, материал" };
         public List<AssociationWord> semanticMeanings;
         public WordsList()
         {

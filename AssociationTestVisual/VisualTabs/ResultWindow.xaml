@@ -21,7 +21,7 @@
             <TextBlock Text="ФИО" FontSize="20"/>
             <TextBlock Text="Группа" FontSize="20"/>
             <TextBlock Text="Беглость" FontSize="20"/>
-            <TextBlock Text="Оригинвальность" FontSize="20"/>
+            <TextBlock Text="Оригинальность" FontSize="20"/>
             <TextBlock Text="Семантическая гибкость" FontSize="20"/>
             <TextBlock Text="Ассоциативная гибкость" FontSize="20"/>
         </StackPanel>
