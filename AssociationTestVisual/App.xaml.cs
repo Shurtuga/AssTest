@@ -14,4 +14,9 @@ namespace AssociationTestVisual
     public partial class App : Application
     {
     }
+
+    public static class GLOBALS
+    {
+        public static ExcelHelper.ExcelWorker Eww { get; set; }
+    }
 }

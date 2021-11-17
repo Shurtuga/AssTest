@@ -33,5 +33,18 @@ namespace AssociationTestVisual.VisualTabs
             inputWindow.Show();
             this.Close();
         }
+
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            //await System.Threading.Tasks.Task.Factory.StartNew(() =>
+            //{
+            //    GLOBALS.Eww = new ExcelWorker();
+            //});
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            //Dispatcher.Invoke(GLOBALS.Eww.Close);
+        }
     }
 }

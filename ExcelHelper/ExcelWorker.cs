@@ -251,7 +251,7 @@ namespace ExcelHelper
 
         #region Async Methods
 
-        public async Task<WordInfo> GetInfoAsync(string word, string association)
+        public async Task<WordInfo> GetWordAsync(string word, string association)
         {
             WordInfo res = null;
 
@@ -263,7 +263,7 @@ namespace ExcelHelper
             return res;
         }
 
-        public async Task AddWordEntryAsync(WordInfo info)
+        public async Task AddWordAsync(WordInfo info)
         {
             await Task.Factory.StartNew(() =>
             {
