@@ -29,7 +29,8 @@ namespace AssociationTestVisual.VisualTabs
         List<StackPanel> cats;
         List<WordInfo> wordInfos = new List<WordInfo>();
         List<TabItem> tabs;
-        ExcelWorker Eww = new ExcelWorker(System.IO.Path.GetFullPath(@"..\..\..\ExcelHelper\ExcelTables\Частоты.xlsx"));
+        //ExcelWorker Eww = new ExcelWorker(System.IO.Path.GetFullPath(@"..\..\..\ExcelHelper\ExcelTables\Частоты.xlsx"));
+        ExcelWorker Eww;
 
         public Input(PersonResult res)
         {
@@ -41,6 +42,7 @@ namespace AssociationTestVisual.VisualTabs
             //Words.semanticMeanings.Add(new AssociationWord() { Word = "Язык", Meanings = new List<string>() { "Орган вкуса", "Часть колокола", "Деталь обуви", "Словесное средство", "Невербалика", "Народ, нация", "Формальный язык", "Выпечка, пирожное","Блюдо, продукт" } });
             //Words.semanticMeanings.Add(new AssociationWord() { Word = "Дробь", Meanings = new List<string>() { "Мелкие ядрышки", "Звуки", "Математика", "Обозначение номера дома" } });
             //Words.Save();
+
             Words.Load();
             results = res;
             tabs = new List<TabItem>{ TIFir, TISecond, TIThird, TIFourth, TIFifth, TISixth };
@@ -73,20 +75,31 @@ namespace AssociationTestVisual.VisualTabs
             lists[int.Parse(s[1])].Items.Remove((TextBlock)((ContextMenu)mnu.Parent).PlacementTarget);
         }
 
-        private void EnterWord(object sender, KeyEventArgs e)
+        private async void EnterWord(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Return)
             {
                 //если незнакомое слово
                 int i = inpts.IndexOf((TextBox)sender);
-                wordInfos.Add(Eww.GetWord(inpts[i].Text, tabs[i].Header.ToString()));
+
+                string word = inpts[i].Text;
+                inpts[i].Text = "";
+
+                //var gr = Eww.GetWordAsync(inpts[i].Text, tabs[i].Header.ToString());
+                //var r = await gr;
+
+                wordInfos.Add(await Eww.GetWordAsync(word, tabs[i].Header.ToString()));
+
+                //wordInfos.Add(r);
+                //wordInfos.Add(Eww.GetWord(inpts[i].Text, tabs[i].Header.ToString()));
+
                 if (wordInfos.Last().FSem !=-1)
                 {
                     //добавление в выбранную категорию
                     ((StackPanel)cats[i].Children[wordInfos.Last().FSem-1]).Children.Add(new TextBlock() { Text = wordInfos.Last().Word });
                 }
-                else lists[i].Items.Add(new TextBlock() { Text = inpts[i].Text, ContextMenu = menus[i] });
-                inpts[i].Text = "";
+                else lists[i].Items.Add(new TextBlock() { Text = word, ContextMenu = menus[i] });
+                //inpts[i].Text = "";
                 //иначе получаем индекс категории, добавляем в i-тый стекбокс
             }
         }
@@ -99,7 +112,16 @@ namespace AssociationTestVisual.VisualTabs
             }
             CatsSortWindow CatsSort = new CatsSortWindow(results, wordInfos, Eww, Words);
             CatsSort.Show();
+            //Eww.Close();
             this.Close();
+        }
+
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            await Task.Factory.StartNew(() =>
+            {
+                Eww = new ExcelWorker();
+            });
         }
     }
 }
