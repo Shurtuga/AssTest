@@ -63,6 +63,9 @@
     <Compile Include="VisualTabs\Input.xaml.cs">
       <DependentUpon>Input.xaml</DependentUpon>
     </Compile>
+    <Compile Include="VisualTabs\MyTabItem.xaml.cs">
+      <DependentUpon>MyTabItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="VisualTabs\ResultWindow.xaml.cs">
       <DependentUpon>ResultWindow.xaml</DependentUpon>
     </Compile>
@@ -101,6 +104,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="VisualTabs\Input.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="VisualTabs\MyTabItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

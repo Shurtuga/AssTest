@@ -45,7 +45,7 @@ namespace ExcelHelper
         public void Dispose()
         {
             Close();
-        } 
+        }
         #endregion
 
         #region DBWorker Methods
@@ -61,7 +61,7 @@ namespace ExcelHelper
             //    c++;
             //}
 
-            for(; ; )
+            for (; ; )
             {
                 w = _ewbFreq.GetCell(c, 0).ToString().Trim(' ');
                 if (w == word)
@@ -280,5 +280,12 @@ namespace ExcelHelper
         }
 
         #endregion
+
+        //~ExcelWorker()
+        //{
+        //    Console.WriteLine("ENDING HERE");
+        //    _ewbFreq.Close();
+        //    _ewbRes.Close();
+        //}
     }
 }

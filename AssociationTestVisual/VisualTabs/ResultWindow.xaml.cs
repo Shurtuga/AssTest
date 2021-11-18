@@ -21,17 +21,27 @@ namespace AssociationTestVisual.VisualTabs
     /// 
     public partial class ResultWindow : Window
     {
-        PersonResult result;
-        public ResultWindow(PersonResult res)
+        public ResultWindow()
         {
             InitializeComponent();
-            result = res;
-            FIOBox.Text = result.Name;
-            GroupBox.Text = result.Group;
-            SpeedBox.Text = result.Speed.ToString();
-            OriginalityBox.Text = result.Originality.ToString();
-            FassBox.Text = result.FAss.ToString();
-            FsemBox.Text = result.FSem.ToString();
+            FIOBox.Text = GLOBALS.GetPerson.Name;
+            GroupBox.Text = GLOBALS.GetPerson.Group;
+			SpeedBox.Text = GLOBALS.GetPerson.Speed.ToString();
+            OriginalityBox.Text = GLOBALS.GetPerson.Originality.ToString();
+            FassBox.Text = GLOBALS.GetPerson.FAss.ToString();
+            FsemBox.Text = GLOBALS.GetPerson.FSem.ToString();
+            
+            
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            GLOBALS.Eww.SaveResult(GLOBALS.GetPerson);
+        }
+
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            foreach (var v in GLOBALS.WordInfos) { await GLOBALS.Eww.AddWordAsync(v); }
         }
     }
 }

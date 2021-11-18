@@ -238,7 +238,7 @@ namespace ExcelHelper
         {
             Closing?.Invoke();
 
-            _workbook?.Save();
+            ((Excel._Workbook)_workbook)?.Save();
             _worksheet = null;
 
             _workbook?.Close();
@@ -268,6 +268,7 @@ namespace ExcelHelper
         /// </summary>
         public void Dispose()
         {
+            Console.WriteLine("DISPOSED");
             Close();
         }
         #endregion

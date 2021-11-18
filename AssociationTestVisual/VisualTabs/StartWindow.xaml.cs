@@ -2,12 +2,14 @@
 using ExcelHelper;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace AssociationTestVisual.VisualTabs
 {
     /// <summary>
     /// Логика взаимодействия для Window2.xaml
     /// </summary>
+
 
     public partial class StartWindow : Window
     {
@@ -23,28 +25,30 @@ namespace AssociationTestVisual.VisualTabs
             
         }
 
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            await Task.Factory.StartNew(() =>
+            {
+            GLOBALS.Eww = new ExcelWorker();
+            Dispatcher.Invoke(() => { ContinueButton.IsEnabled = true; });
+            });
+        }
+
         private void ContinueButton_Click(object sender, RoutedEventArgs e)
         {
             //if (FIOBox.Text.Length == 0) { MessageBox.Show("Поле ФИО или ID не должно быть пустым!!!"); return; }
            // else
             //if (GROUPBox.Text.Length == 0) { MessageBox.Show("Вы должны выбрать группу тестируемого!!!"); return; }
-            PersonResult pr = new PersonResult() { Name = FIOBox.Text, Group = GROUPBox.Text };
-            Input inputWindow = new Input(pr);
+            GLOBALS.GetPerson = new PersonResult() { Name = FIOBox.Text, Group = GROUPBox.Text };
+            Input inputWindow = new Input();
             inputWindow.Show();
             this.Close();
         }
 
-        private async void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            //await System.Threading.Tasks.Task.Factory.StartNew(() =>
-            //{
-            //    GLOBALS.Eww = new ExcelWorker();
-            //});
-        }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            //Dispatcher.Invoke(GLOBALS.Eww.Close);
+            //Dispatcher.Invoke(()=> { GLOBALS.Eww?.Close(); });
         }
     }
 }

@@ -20,20 +20,12 @@ namespace AssociationTestVisual.VisualTabs
     /// </summary>
     public partial class CatsSortWindow : Window
     {
-        PersonResult res;
-        ExcelWorker Eww;
         List<ListBox> lists;
         List<ContextMenu> menus = new List<ContextMenu>();
         List<StackPanel> cats;
-        List<WordInfo> wordInfos = new List<WordInfo>();
         List<TabItem> tabs;
-        WordsList words;
-        public CatsSortWindow(PersonResult r, List<WordInfo> w, ExcelWorker ew, WordsList wo)
+        public CatsSortWindow()
         {
-            res = r;
-            wordInfos = w;
-            Eww = ew;
-            words = wo;
             InitializeComponent();
             tabs = new List<TabItem> { TIFir, TISecond, TIThird, TIFourth, TIFifth, TISixth };
             cats = new List<StackPanel> { FirCategory, SecondCategory, ThirdCategory, FourthCategory, FifthCategory, SixthCategory };
@@ -42,7 +34,7 @@ namespace AssociationTestVisual.VisualTabs
             for (int i = 0; i < 6; i++)
             {
                 ContextMenu menu = new ContextMenu();
-                tabs[i].Header = words.semanticMeanings[i].Word;
+                tabs[i].Header =GLOBALS.Words.semanticMeanings[i].Word;
                 for (int j = 0; j < WordsList.assTypes.Count; j++)
                 {
                     MenuItem mi = new MenuItem() { Name = "ItName_" + i.ToString() + "_" + j.ToString(), Header = WordsList.assTypes[j] };
@@ -64,9 +56,9 @@ namespace AssociationTestVisual.VisualTabs
                 lists[int.Parse(s[1])].Items.Remove((TextBlock)((ContextMenu)mnu.Parent).PlacementTarget);
             }
 
-            foreach (var v in wordInfos)
+            foreach (var v in GLOBALS.WordInfos)
             {
-                int i = words.semanticMeanings.FindIndex(t => t.Word.ToLower() == v.Association.ToLower());
+                int i = GLOBALS.Words.semanticMeanings.FindIndex(t => t.Word.ToLower() == v.Association.ToLower());
                 if (v.FAss!=-1) { ((StackPanel)cats[i].Children[v.FAss-1]).Children.Add(new TextBlock() { Text = v.Word }); }
                 else lists[i].Items.Add(new TextBlock() { Text = v.Word, ContextMenu = menus[i] });
             }
@@ -79,8 +71,8 @@ namespace AssociationTestVisual.VisualTabs
             {
                 if (lists[i].Items.Count !=0) { MessageBox.Show("Необходимо распределить ассоциации к слову "+tabs[i].Header.ToString()); return; }
             }
-            res = Eww.Calculate(res.Name, res.Group,wordInfos);
-            ResultWindow rw = new ResultWindow(res);//сюда передать итоговый резалт
+            GLOBALS.GetPerson = GLOBALS.Eww.Calculate(GLOBALS.GetPerson.Name, GLOBALS.GetPerson.Group,GLOBALS.WordInfos);//мб полностью перенести в GLOBALS
+            ResultWindow rw = new ResultWindow();//сюда передать итоговый резалт
             rw.Show();
             this.Close();
         }
