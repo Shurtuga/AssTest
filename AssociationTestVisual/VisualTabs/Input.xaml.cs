@@ -46,8 +46,9 @@ namespace AssociationTestVisual.VisualTabs
             //{
             //    if (lists[i].Items.Count !=0) { MessageBox.Show("Необходимо распределить ассоциации к слову "+tabs[i].Header.ToString()); return; }
             //}
-            CatsSortWindow CatsSort = new CatsSortWindow();
-            CatsSort.Show();
+            GLOBALS.GetPerson = GLOBALS.Eww.Calculate(GLOBALS.GetPerson.Name, GLOBALS.GetPerson.Group, GLOBALS.WordInfos);//мб полностью перенести в GLOBALS
+            ResultWindow rw = new ResultWindow();//сюда передать итоговый резалт
+            rw.Show();
             this.Close();
         }
 

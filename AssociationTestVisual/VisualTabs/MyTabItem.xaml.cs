@@ -21,7 +21,8 @@ namespace AssociationTestVisual.VisualTabs
     public partial class MyTabItem : TabItem
     {
         public string InWord;
-        ContextMenu menu;
+        ContextMenu SemMenu;
+        ContextMenu AssMenu;
         public int Numer = -1;
         public MyTabItem(string word, int n)
         {
@@ -29,18 +30,27 @@ namespace AssociationTestVisual.VisualTabs
             Numer = n;
             Tab.Header = word;
             InWord = word;
-            menu = new ContextMenu();
+            SemMenu = new ContextMenu();
+            AssMenu = new ContextMenu();
+            SemInit();
+            AssInit();
+        }
+        #region Semantics
+
+        private void SemInit()
+        {
             for (int j = 0; j < GLOBALS.Words.semanticMeanings[Numer].Meanings.Count; j++)
             {
                 MenuItem mi = new MenuItem() { Name = "ItName_" + Numer.ToString() + "_" + j.ToString(), Header = GLOBALS.Words.semanticMeanings[Numer].Meanings[j] };
-                mi.Click += Mi_Click;
-                menu.Items.Add(mi);
+                mi.Click += SemMi_Click;
+                SemMenu.Items.Add(mi);
                 StackPanel sp = new StackPanel() { Margin = new Thickness(10, 2, 10, 2), VerticalAlignment = VerticalAlignment.Stretch, Height = Double.NaN };
                 sp.Children.Add(new Button() { Content = GLOBALS.Words.semanticMeanings[Numer].Meanings[j], FontSize = 20 });
                 Category.Children.Add(sp);
             }
         }
-        private void Mi_Click(object sender, RoutedEventArgs e)
+
+        private void SemMi_Click(object sender, RoutedEventArgs e)
         {
             MenuItem mnu = sender as MenuItem;
             string[] s = ((MenuItem)sender).Name.Split('_');
@@ -49,7 +59,7 @@ namespace AssociationTestVisual.VisualTabs
             UnsortedList.Items.Remove((TextBlock)((ContextMenu)mnu.Parent).PlacementTarget);
         }
 
-        private async void EnterWord(object sender, KeyEventArgs e)
+        private async void SemEnterWord(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Return)
             {
@@ -60,7 +70,7 @@ namespace AssociationTestVisual.VisualTabs
                 //var gr = Eww.GetWordAsync(inpts[i].Text, tabs[i].Header.ToString());
                 //var r = await gr;
                 GLOBALS.WordInfos.Add(await GLOBALS.Eww.GetWordAsync(word, InWord));
-                
+
                 //wordInfos.Add(r);
                 //wordInfos.Add(Eww.GetWord(inpts[i].Text, tabs[i].Header.ToString()));
 
@@ -68,10 +78,41 @@ namespace AssociationTestVisual.VisualTabs
                 {
                     //добавление в выбранную категорию
                     ((StackPanel)Category.Children[GLOBALS.WordInfos.Last().FSem-1]).Children.Add(new TextBlock() { Text = GLOBALS.WordInfos.Last().Word });
+                    ((StackPanel)AssCategory.Children[GLOBALS.WordInfos.Last().FSem-1]).Children.Add(new TextBlock() { Text =GLOBALS.WordInfos.Last().Word });
                 }
-                else UnsortedList.Items.Add(new TextBlock() { Text = word, ContextMenu = menu });
+                else
+                {
+                    UnsortedList.Items.Add(new TextBlock() { Text = word, ContextMenu = SemMenu });
+                    UnsortedAssList.Items.Add(new TextBlock() { Text = word, ContextMenu = AssMenu });
+                };
                 //иначе получаем индекс категории, добавляем в i-тый стекбокс
             }
         }
+        #endregion
+
+        #region Association
+
+        public void AssInit()
+        {
+            for (int j = 0; j < WordsList.assTypes.Count; j++)
+            {
+                MenuItem mi = new MenuItem() { Name = "ItName_" + Numer.ToString() + "_" + j.ToString(), Header = WordsList.assTypes[j] };
+                mi.Click += AssMi_Click;
+                AssMenu.Items.Add(mi);
+                StackPanel sp = new StackPanel() { Margin = new Thickness(10, 2, 10, 2), VerticalAlignment = VerticalAlignment.Stretch, Height = Double.NaN };
+                sp.Children.Add(new Button() { Content = WordsList.assTypes[j], FontSize = 20 });
+                AssCategory.Children.Add(sp);
+            }
+        }
+
+        void AssMi_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem mnu = sender as MenuItem;
+            string[] s = ((MenuItem)sender).Name.Split('_');
+            //добавление в выбранную категорию!!!
+            ((StackPanel)AssCategory.Children[int.Parse(s[2])]).Children.Add(new TextBlock() { Text = ((TextBlock)((ContextMenu)mnu.Parent).PlacementTarget).Text, FontSize = 15, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center });
+            UnsortedAssList.Items.Remove((TextBlock)((ContextMenu)mnu.Parent).PlacementTarget);
+        }
+        #endregion
     }
 }

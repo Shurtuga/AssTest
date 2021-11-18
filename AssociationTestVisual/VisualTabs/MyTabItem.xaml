@@ -6,24 +6,44 @@
              xmlns:local="clr-namespace:AssociationTestVisual.VisualTabs"
              mc:Ignorable="d" Name="Tab"
              d:DesignHeight="450" d:DesignWidth="800">
-    <StackPanel>
-        <TextBlock/>
-        <DockPanel VerticalAlignment="Stretch" Height="Auto" LastChildFill="True" >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="220"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="220"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition>
+            </ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <DockPanel Grid.Row="0" VerticalAlignment="Stretch" Height="Auto" LastChildFill="True" >
             <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Height="40">
-                <TextBox x:Name="WordsInput"  TextWrapping="WrapWithOverflow" FontSize="15" Height="26" Margin="5,5,0,5" Width="275" HorizontalAlignment="Left" KeyUp="EnterWord"/>
+                <TextBox x:Name="WordsInput"  TextWrapping="WrapWithOverflow" FontSize="15" Height="26" Margin="5,5,0,5" Width="275" HorizontalAlignment="Left" KeyUp="SemEnterWord"/>
                 <Image Source="\VisualTabs\VisualResourses\EnterPic2.png" Margin="1,6,0,6" Stretch="UniformToFill"/>
-                <ListBox Name="UnsortedList" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
-                    <ListBox.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel Orientation="Horizontal"/>
-                        </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
-                </ListBox>
             </StackPanel>
-            <WrapPanel Name="Category" Focusable="False" VerticalAlignment="Stretch" Height="Auto" HorizontalAlignment="Stretch">
-
-            </WrapPanel>
-            <Line HorizontalAlignment="Stretch" StrokeThickness="5"/>
         </DockPanel>
-    </StackPanel>
+        <ListBox Height="30" Grid.Row="1" Name="UnsortedList" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+        </ListBox>
+        <WrapPanel Grid.Row="2" Name="Category" Focusable="False" VerticalAlignment="Stretch" Height="Auto" HorizontalAlignment="Stretch">
+
+        </WrapPanel>
+        <ListBox Height="30" Grid.Row="4" Name="UnsortedAssList" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+        </ListBox>
+        <WrapPanel Grid.Row="5" Name="AssCategory" Focusable="False" VerticalAlignment="Stretch" Height="Auto" HorizontalAlignment="Stretch">
+
+        </WrapPanel>
+    </Grid>
 </TabItem>
