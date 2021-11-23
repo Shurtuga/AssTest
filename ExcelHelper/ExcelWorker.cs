@@ -14,10 +14,13 @@ namespace ExcelHelper
         //string _resultsBook = System.IO.Path.GetFullPath(@"..\..\ExcelTables\Результаты.xlsx");
         //string _freqBook = System.IO.Path.GetFullPath(@"..\..\ExcelTables\Частоты.xlsx");
 
-        string _resultsBook = System.IO.Path.GetFullPath(
-            @"C:\Users\User\source\repos\associationstest\ExcelHelper\ExcelTables\Результаты.xlsx");
-        string _freqBook = System.IO.Path.GetFullPath(
-            @"C:\Users\User\source\repos\associationstest\ExcelHelper\ExcelTables\Частоты.xlsx");
+        //string _resultsBook = System.IO.Path.GetFullPath(
+        //    @"C:\Users\User\source\repos\associationstest\ExcelHelper\ExcelTables\Результаты.xlsx");
+        //string _freqBook = System.IO.Path.GetFullPath(
+        //    @"C:\Users\User\source\repos\associationstest\ExcelHelper\ExcelTables\Частоты.xlsx");
+
+        string _resultsBook;
+        string _freqBook;
 
         ExcelWorkerBase _ewbFreq;
         ExcelWorkerBase _ewbRes;
@@ -25,11 +28,17 @@ namespace ExcelHelper
         #region ctors
         public ExcelWorker(string path)
         {
+            _resultsBook = System.Configuration.ConfigurationManager.AppSettings["resBookPath"];
+            _freqBook = System.Configuration.ConfigurationManager.AppSettings["freqBookPath"];
+
             _ewbFreq = new ExcelWorkerBase(_freqBook);
             _ewbRes = new ExcelWorkerBase(_resultsBook);
         }
         public ExcelWorker()
         {
+            _resultsBook = System.Configuration.ConfigurationManager.AppSettings["resBookPath"];
+            _freqBook = System.Configuration.ConfigurationManager.AppSettings["freqBookPath"];
+
             _ewbFreq = new ExcelWorkerBase(_freqBook);
             _ewbRes = new ExcelWorkerBase(_resultsBook);
         }
@@ -40,8 +49,21 @@ namespace ExcelHelper
         {
             _ewbFreq.Close();
             _ewbRes.Close();
-        }
 
+            GC.Collect();
+            KillExcel();
+        }
+        private void KillExcel()
+        {
+            System.Diagnostics.Process[] PROC = System.Diagnostics.Process.GetProcessesByName("EXCEL");
+            foreach (System.Diagnostics.Process PK in PROC)
+            {
+                if (PK.MainWindowTitle.Length == 0)
+                {
+                    PK.Kill();
+                }
+            }
+        }
         public void Dispose()
         {
             Close();

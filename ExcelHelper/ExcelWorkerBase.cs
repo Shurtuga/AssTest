@@ -247,8 +247,8 @@ namespace ExcelHelper
             _excel?.Quit();
             _excel = null;
 
-            GC.Collect();
-            KillExcel();
+            //GC.Collect();
+            //KillExcel();
 
             Closed?.Invoke();
         }

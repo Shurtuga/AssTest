@@ -15,7 +15,12 @@ namespace AssociationTestVisual
     {
         private void Application_Exit(object sender, ExitEventArgs e)
         {
-            //    GLOBALS.Eww?.Close();
+            GLOBALS.Eww?.Close();
+        }
+
+        private void Application_Startup(object sender, StartupEventArgs e)
+        {
+            //GLOBALS.Eww = new ExcelHelper.ExcelWorker();
         }
     }
     public static class GLOBALS
