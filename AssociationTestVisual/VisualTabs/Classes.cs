@@ -31,7 +31,7 @@ namespace AssociationTestVisual.VisualTabs
 
         public void Save()
         {
-            using (var stream = new FileStream(@"..\..\GroupsAndWords\Groups.xml", FileMode.OpenOrCreate))
+            using (var stream = new FileStream(@"..\..\GroupsAndWords\Groups.xml", FileMode.Create))
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(List<string>));
                 serializer.Serialize(stream, List);

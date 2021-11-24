@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AssociationTestVisual.VisualTabs;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -15,6 +16,7 @@ namespace AssociationTestVisual
     {
         private void Application_Exit(object sender, ExitEventArgs e)
         {
+            GLOBALS.Groups.Save();
             GLOBALS.Eww?.Close();
         }
 
@@ -28,7 +30,9 @@ namespace AssociationTestVisual
         public static ExcelHelper.ExcelWorker Eww { get; set; }
         public static ExcelHelper.PersonResult GetPerson { get; set; }
 
-        public static VisualTabs.WordsList Words { get; set; }
+        public static WordsList Words { get; set; }
         public static List<ExcelHelper.WordInfo> WordInfos { get; set; }
+
+        public static GroupsList Groups { get; set; }
     }
 }

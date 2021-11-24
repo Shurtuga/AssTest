@@ -28,16 +28,16 @@ namespace ExcelHelper
         #region ctors
         public ExcelWorker(string path)
         {
-            _resultsBook = System.Configuration.ConfigurationManager.AppSettings["resBookPath"];
-            _freqBook = System.Configuration.ConfigurationManager.AppSettings["freqBookPath"];
+            _resultsBook = System.IO.Path.GetFullPath(System.Configuration.ConfigurationManager.AppSettings["resBookPath"]);
+            _freqBook = System.IO.Path.GetFullPath(System.Configuration.ConfigurationManager.AppSettings["freqBookPath"]);
 
             _ewbFreq = new ExcelWorkerBase(_freqBook);
             _ewbRes = new ExcelWorkerBase(_resultsBook);
         }
         public ExcelWorker()
         {
-            _resultsBook = System.Configuration.ConfigurationManager.AppSettings["resBookPath"];
-            _freqBook = System.Configuration.ConfigurationManager.AppSettings["freqBookPath"];
+            _resultsBook = System.IO.Path.GetFullPath(System.Configuration.ConfigurationManager.AppSettings["resBookPath"]);
+            _freqBook = System.IO.Path.GetFullPath(System.Configuration.ConfigurationManager.AppSettings["freqBookPath"]);
 
             _ewbFreq = new ExcelWorkerBase(_freqBook);
             _ewbRes = new ExcelWorkerBase(_resultsBook);
