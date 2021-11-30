@@ -186,8 +186,15 @@ namespace ExcelHelper
         /// <param name="name">Имя вкладки</param>
         public void SelectSheet(string name)
         {
-            _worksheet = _workbook.Sheets[name];
-            _worksheet.Activate();
+            try
+            {
+                _worksheet = _workbook.Worksheets[name];
+                _worksheet.Activate();
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
 
             SheetChanged?.Invoke();
         }
@@ -197,8 +204,15 @@ namespace ExcelHelper
         /// <param name="sheet">Номер вкладки (нумерация с 0)</param>
         public void SelectSheet(int sheet)
         {
-            _worksheet = _workbook.Sheets[++sheet];
-            _worksheet.Activate();
+            try
+            {
+                _worksheet = _workbook.Sheets[++sheet];
+                _worksheet.Activate();
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
 
             SheetChanged?.Invoke();
         }
