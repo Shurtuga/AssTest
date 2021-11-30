@@ -20,7 +20,7 @@ namespace AssociationTestVisual.VisualTabs
         {
             try
             {
-                using (var stream = new FileStream(@"..\..\GroupsAndWords\Groups.xml", FileMode.OpenOrCreate))
+                using (var stream = new FileStream(@"AssociationTestVisual\GroupsAndWords\Groups.xml", FileMode.OpenOrCreate))
                 {
                     XmlSerializer serializer = new XmlSerializer(typeof(List<string>));
                     List = (List<string>)serializer.Deserialize(stream);
