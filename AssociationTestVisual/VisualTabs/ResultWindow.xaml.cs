@@ -26,22 +26,38 @@ namespace AssociationTestVisual.VisualTabs
             InitializeComponent();
             FIOBox.Text = GLOBALS.GetPerson.Name;
             GroupBox.Text = GLOBALS.GetPerson.Group;
-			SpeedBox.Text = GLOBALS.GetPerson.Speed.ToString();
+            SpeedBox.Text = GLOBALS.GetPerson.Speed.ToString();
             OriginalityBox.Text = GLOBALS.GetPerson.Originality.ToString();
             FassBox.Text = GLOBALS.GetPerson.FAss.ToString();
             FsemBox.Text = GLOBALS.GetPerson.FSem.ToString();
-            
-            
+
+
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             GLOBALS.Eww.SaveResult(GLOBALS.GetPerson);
+            SaveButton.IsEnabled = false;
+
         }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             foreach (var v in GLOBALS.WordInfos) { await GLOBALS.Eww.AddWordAsync(v); }
+        }
+
+        private void RestartButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (SaveButton.IsEnabled)
+            {
+                if (MessageBox.Show("Вы не сохранили результат! Сохранить?", "Внимание!", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    GLOBALS.Eww.SaveResult(GLOBALS.GetPerson);
+                }
+            }
+            StartWindow sw = new StartWindow();
+            sw.Show();
+            this.Close();
         }
     }
 }

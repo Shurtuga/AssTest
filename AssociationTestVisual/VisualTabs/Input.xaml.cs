@@ -42,10 +42,10 @@ namespace AssociationTestVisual.VisualTabs
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            //for (int i = 0; i<6; i++)
-            //{
-            //    if (lists[i].Items.Count !=0) { MessageBox.Show("Необходимо распределить ассоциации к слову "+tabs[i].Header.ToString()); return; }
-            //}
+            for (int i = 0; i<Tabs.Items.Count; i++)
+            {
+                if (((MyTabItem)Tabs.Items[i]).UnsortedList.Items.Count !=0||((MyTabItem)Tabs.Items[i]).UnsortedAssList.Items.Count !=0) { MessageBox.Show("Необходимо распределить ассоциации к слову "+((MyTabItem)Tabs.Items[i]).InWord); return; }
+            }
             GLOBALS.GetPerson = GLOBALS.Eww.Calculate(GLOBALS.GetPerson.Name, GLOBALS.GetPerson.Group, GLOBALS.WordInfos);//мб полностью перенести в GLOBALS
             ResultWindow rw = new ResultWindow();//сюда передать итоговый резалт
             rw.Show();

@@ -50,6 +50,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
@@ -78,6 +79,9 @@
     </Compile>
     <Compile Include="GLOBALS.cs" />
     <Compile Include="VisualTabs\Classes.cs" />
+    <Compile Include="VisualTabs\GroupItem.xaml.cs">
+      <DependentUpon>GroupItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="VisualTabs\Input.xaml.cs">
       <DependentUpon>Input.xaml</DependentUpon>
     </Compile>
@@ -90,8 +94,8 @@
     <Compile Include="VisualTabs\StartWindow.xaml.cs">
       <DependentUpon>StartWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="VisualTabs\CatsSortWindow.xaml.cs">
-      <DependentUpon>CatsSortWindow.xaml</DependentUpon>
+    <Compile Include="VisualTabs\Window1.xaml.cs">
+      <DependentUpon>Window1.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -121,6 +125,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="VisualTabs\GroupItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="VisualTabs\Input.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -137,7 +145,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="VisualTabs\CatsSortWindow.xaml">
+    <Page Include="VisualTabs\Window1.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

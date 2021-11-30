@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using AssociationTestVisual.VisualTabs;
 
 namespace AssociationTestVisual
 {
@@ -9,5 +10,6 @@ namespace AssociationTestVisual
 
         public static VisualTabs.WordsList Words { get; set; }
         public static List<ExcelHelper.WordInfo> WordInfos { get; set; }
+        public static GroupsList Groups { get; set; }
     }
 }
