@@ -42,7 +42,7 @@ namespace ExcelHelper
             }
             catch (Exception e)
             {
-                Logger.Log(e);
+                //Logger.Log(e);
                 Close();
             }
         }
@@ -298,7 +298,7 @@ namespace ExcelHelper
             }
             catch (Exception e)
             {
-                Logger.Log(e);
+                //Logger.Log(e);
             }
         }
         #endregion

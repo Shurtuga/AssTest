@@ -39,8 +39,8 @@ namespace ExcelHelper
             _resultsBook = System.Configuration.ConfigurationManager.AppSettings["resBookPath"];
             _freqBook = System.Configuration.ConfigurationManager.AppSettings["freqBookPath"];
 
-            _ewbFreq = new ExcelWorkerBase(_freqBook);
-            _ewbRes = new ExcelWorkerBase(_resultsBook);
+            _ewbFreq = new ExcelWorkerBase(System.IO.Path.GetFullPath(_freqBook));
+            _ewbRes = new ExcelWorkerBase(System.IO.Path.GetFullPath(_resultsBook));
         }
         #endregion
 
