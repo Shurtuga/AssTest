@@ -240,8 +240,15 @@ namespace ExcelHelper
         /// <param name="path">Путь файла</param>
         public void Open(string path)
         {
-            _workbook = _excel.Workbooks.Open(path);
-            SelectSheet(0);
+            try
+            {
+                _workbook = _excel.Workbooks.Open(path);
+                SelectSheet(0);
+            }
+            catch (Exception)
+            {
+                NewFile(path);
+            }
 
             Opened?.Invoke();
         }

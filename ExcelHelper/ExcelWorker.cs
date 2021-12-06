@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using System.IO;
+
 namespace ExcelHelper
 {
     /// <summary>
@@ -19,25 +21,33 @@ namespace ExcelHelper
         //string _freqBook = System.IO.Path.GetFullPath(
         //    @"C:\Users\User\source\repos\associationstest\ExcelHelper\ExcelTables\Частоты.xlsx");
 
+        string freqBookPath = System.Configuration.ConfigurationManager.AppSettings["freqBookPath"];
+        string resBookPath = System.Configuration.ConfigurationManager.AppSettings["resBookPath"];
+        string wordsRefPath = System.Configuration.ConfigurationManager.AppSettings["wordsRefPath"];
+        string resultsRefPath = System.Configuration.ConfigurationManager.AppSettings["resultsRefPath"];
+
+
+
         string _resultsBook;
         string _freqBook;
 
         ExcelWorkerBase _ewbFreq;
         ExcelWorkerBase _ewbRes;
+        ExcelWorkerBase _ewbTmp;
 
         #region ctors
         public ExcelWorker(string path)
         {
-            _resultsBook = System.IO.Path.GetFullPath(System.Configuration.ConfigurationManager.AppSettings["resBookPath"]);
-            _freqBook = System.IO.Path.GetFullPath(System.Configuration.ConfigurationManager.AppSettings["freqBookPath"]);
+            _resultsBook = System.IO.Path.GetFullPath(resBookPath);
+            _freqBook = System.IO.Path.GetFullPath(freqBookPath);
 
             _ewbFreq = new ExcelWorkerBase(_freqBook);
             _ewbRes = new ExcelWorkerBase(_resultsBook);
         }
         public ExcelWorker()
         {
-            _resultsBook = System.IO.Path.GetFullPath(System.Configuration.ConfigurationManager.AppSettings["resBookPath"]);
-            _freqBook = System.IO.Path.GetFullPath(System.Configuration.ConfigurationManager.AppSettings["freqBookPath"]);
+            _resultsBook = System.IO.Path.GetFullPath(resBookPath);
+            _freqBook = System.IO.Path.GetFullPath(freqBookPath);
 
             _ewbFreq = new ExcelWorkerBase(System.IO.Path.GetFullPath(_freqBook));
             _ewbRes = new ExcelWorkerBase(System.IO.Path.GetFullPath(_resultsBook));
@@ -70,11 +80,38 @@ namespace ExcelHelper
         }
         #endregion
 
+        #region phases
+        public void InputPhase()
+        {
+            _ewbTmp.Close();
+            _ewbRes.Open(Path.GetFullPath(wordsRefPath));
+            _ewbFreq.Open(Path.GetFullPath(freqBookPath));
+        }
+        public void ResultReferencePhase()
+        {
+            _ewbRes.Open(Path.GetFullPath(resultsRefPath));
+            _ewbFreq.Open(Path.GetFullPath(freqBookPath));
+        }
+        public void ResultPhase()
+        {
+            //await Task.Factory.StartNew(() => {
+            //    _ewbTmp = new ExcelWorkerBase(resBookPath);
+            //});
+            _ewbTmp = new ExcelWorkerBase(resBookPath);
+            _ewbRes.Open(Path.GetFullPath(resultsRefPath));
+            _ewbFreq.Open(Path.GetFullPath(wordsRefPath));
+        }
+        #endregion
+
         #region DBWorker Methods
         public WordInfo GetWord(string word, string association)
         {
+            return getWord(_ewbRes, word, association);
+        }
+        private WordInfo getWord(ExcelWorkerBase ewb, string word, string association)
+        {
             //Open(_freqBook);
-            _ewbFreq.SelectSheet(association);
+            ewb.SelectSheet(association);
 
             int c = 0;
             string w;
@@ -85,7 +122,7 @@ namespace ExcelHelper
 
             for (; ; )
             {
-                w = _ewbFreq.GetCell(c, 0).ToString().Trim(' ');
+                w = ewb.GetCell(c, 0).ToString().Trim(' ');
                 if (w == word)
                 {
                     break;
@@ -120,24 +157,29 @@ namespace ExcelHelper
 
         public void AddWord(WordInfo info)
         {
+            addWord(_ewbRes, info);
+            addWord(_ewbFreq, info);
+        }
+        private void addWord(ExcelWorkerBase ewb, WordInfo info)
+        {
             //Open(_freqBook);
-            _ewbFreq.SelectSheet(info.Association);
+            ewb.SelectSheet(info.Association);
 
             int c = 0;
             string w;
 
             for (; ; )
             {
-                w = _ewbFreq.GetCell(c, 0).ToString().Trim(' ');
+                w = ewb.GetCell(c, 0).ToString().Trim(' ');
                 if (w == info.Word)
                 {
-                    int t = int.Parse(_ewbFreq.GetCell(c, 1).ToString());
-                    _ewbFreq.SetCell(c, 1, t + 1);
+                    int t = int.Parse(ewb.GetCell(c, 1).ToString());
+                    ewb.SetCell(c, 1, t + 1);
                     break;
                 }
                 else if (w == "")
                 {
-                    _ewbFreq.AddRow(0, info.ToArray());
+                    ewb.AddRow(0, info.ToArray());
                     break;
                 }
                 c++;
@@ -159,6 +201,56 @@ namespace ExcelHelper
             }
 
             _ewbRes.AddRow(0, result.ToStringArray());
+        }
+        public void SaveResultRef(PersonResult result, List<WordInfo> words)
+        {
+            //Open(_resultsBook);
+            try
+            {
+                _ewbRes.SelectSheet(result.Group);
+            }
+            catch (Exception)
+            {
+                _ewbRes.NewSheet(result.Group);
+                _ewbRes.SelectSheet(result.Group);
+                _ewbRes.AddRow(0, new object[] { "Имя", "Беглость", "Оригинальность", "ГСем", "ГАсс" });
+            }
+
+            string[] ws =
+            {
+                "Клетка",
+                "Лист",
+                "Дробь",
+                "Ключ",
+                "Порог",
+                "Язык",
+            };
+
+
+            string[] res = new string[10];
+
+            res[0] = result.Name;
+            res[1] = result.Speed.ToString();
+            res[2] = result.FAss.ToString();
+            res[3] = result.FSem.ToString();
+
+            for (int i = 0; i < 6; i++)
+            {
+                System.Text.StringBuilder sb = new StringBuilder();
+
+                for (int j = 0; j < words.Count; j++)
+                {
+                    string t;
+                    if ((t = words[j].Association) == ws[i])
+                    {
+                        sb.Append(t + "@");
+                    }
+                }
+
+                res[4 + i] = sb.ToString();
+            }
+
+            _ewbRes.AddRow(0, res);
         }
 
         public PersonResult Calculate(PersonResult[] results)
