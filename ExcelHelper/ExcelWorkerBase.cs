@@ -43,7 +43,8 @@ namespace ExcelHelper
             catch (Exception e)
             {
                 //Logger.Log(e);
-                Close();
+                NewFile(path);
+                //Close();
             }
         }
         /// <summary>
@@ -193,7 +194,7 @@ namespace ExcelHelper
             }
             catch (Exception e)
             {
-                throw;
+                NewSheet(name);
             }
 
             SheetChanged?.Invoke();
@@ -211,7 +212,7 @@ namespace ExcelHelper
             }
             catch (Exception e)
             {
-                throw;
+                NewSheet();
             }
 
             SheetChanged?.Invoke();
