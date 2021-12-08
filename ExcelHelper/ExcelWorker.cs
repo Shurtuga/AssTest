@@ -85,30 +85,30 @@ namespace ExcelHelper
         #region phases
         public void InputPhase()
         {
-            //Task[] t = new Task[]
-            //{
-            //    Task.Factory.StartNew(() =>
-            //    {
-            //        _ewbRes = new ExcelWorkerBase();
-            //        _ewbRes.Open(Path.GetFullPath(wordsRefPath));
-            //    }),
-            //    Task.Factory.StartNew(() =>
-            //    {
-            //        _ewbFreq = new ExcelWorkerBase();
-            //        _ewbFreq.Open(Path.GetFullPath(freqBookPath));
-            //    }),
-            //    Task.Factory.StartNew(() =>
-            //    {
-            //        _ewbTmp?.Close();
-            //    })
-            //};
-            //Task.WaitAll(t);
+            Task[] t = new Task[]
+            {
+                Task.Factory.StartNew(() =>
+                {
+                    _ewbRes = new ExcelWorkerBase();
+                    _ewbRes.Open(Path.GetFullPath(wordsRefPath));
+                }),
+                Task.Factory.StartNew(() =>
+                {
+                    _ewbFreq = new ExcelWorkerBase();
+                    _ewbFreq.Open(Path.GetFullPath(freqBookPath));
+                }),
+                Task.Factory.StartNew(() =>
+                {
+                    _ewbTmp?.Close();
+                })
+            };
+            Task.WaitAll(t);
 
-            _ewbRes = new ExcelWorkerBase();
-            _ewbRes.Open(Path.GetFullPath(wordsRefPath));
-            _ewbFreq = new ExcelWorkerBase();
-            _ewbFreq.Open(Path.GetFullPath(freqBookPath));
-            _ewbTmp?.Close();
+            //_ewbRes = new ExcelWorkerBase();
+            //_ewbRes.Open(Path.GetFullPath(wordsRefPath));
+            //_ewbFreq = new ExcelWorkerBase();
+            //_ewbFreq.Open(Path.GetFullPath(freqBookPath));
+            //_ewbTmp?.Close();
         }
         public void ResultReferencePhase()
         {
@@ -121,7 +121,7 @@ namespace ExcelHelper
             //await Task.Factory.StartNew(() => {
             //    _ewbTmp = new ExcelWorkerBase(resBookPath);
             //});
-            _ewbTmp = new ExcelWorkerBase(resBookPath);
+            _ewbTmp = new ExcelWorkerBase(Path.GetFullPath(resBookPath));
             _ewbRes.Open(Path.GetFullPath(resultsRefPath));
             _ewbFreq.Open(Path.GetFullPath(wordsRefPath));
         }
@@ -135,7 +135,15 @@ namespace ExcelHelper
         private WordInfo getWord(ExcelWorkerBase ewb, string word, string association)
         {
             //Open(_freqBook);
-            ewb.SelectSheet(association);
+            try
+            {
+                ewb.SelectSheet(association);
+            }
+            catch (Exception)
+            {
+                ewb.SelectSheet(association);
+                ewb.AddRow(0, new object[] { "Слово", "Частота", "ГСем", "ГАсс" });
+            }
 
             int c = 0;
             string w;
@@ -204,7 +212,15 @@ namespace ExcelHelper
         private void addWord(ExcelWorkerBase ewb, WordInfo info)
         {
             //Open(_freqBook);
-            ewb.SelectSheet(info.Association);
+            try
+            {
+                ewb.SelectSheet(info.Association);
+            }
+            catch (Exception)
+            {
+                ewb.SelectSheet(info.Association);
+                ewb.AddRow(0, new object[] { "Слово", "Частота", "ГСем", "ГАсс" });
+            }
 
             int c = 0;
             string w;
@@ -236,7 +252,7 @@ namespace ExcelHelper
             }
             catch (Exception)
             {
-                _ewbRes.NewSheet(result.Group);
+                //_ewbRes.NewSheet(result.Group);
                 _ewbRes.SelectSheet(result.Group);
                 _ewbRes.AddRow(0, new object[] { "Имя", "Беглость", "Оригинальность", "ГСем", "ГАсс" });
             }
@@ -252,9 +268,21 @@ namespace ExcelHelper
             }
             catch (Exception)
             {
-                _ewbRes.NewSheet(result.Group);
+                //_ewbRes.NewSheet(result.Group);
                 _ewbRes.SelectSheet(result.Group);
-                _ewbRes.AddRow(0, new object[] { "Имя", "Беглость", "Оригинальность", "ГСем", "ГАсс" });
+                _ewbRes.AddRow(0, new object[] 
+                { 
+                    "Имя", 
+                    "Беглость", 
+                    "ГСем", 
+                    "ГАсс", 
+                    "Клетка", 
+                    "Лист", 
+                    "Дробь",
+                    "Ключ",
+                    "Порог",
+                    "Язык", 
+                });
             }
 
             string[] ws =
@@ -291,6 +319,68 @@ namespace ExcelHelper
             }
 
             _ewbRes.AddRow(0, res);
+        }
+
+        public void SaveAllResults()
+        {
+            if (_ewbTmp == null) return;
+
+            foreach (var sheet in _ewbRes.GetSheetNames())
+            {
+                try
+                {
+                    _ewbTmp.SelectSheet(sheet);
+                }
+                catch (Exception)
+                {
+                    _ewbTmp.SelectSheet(sheet);
+                    _ewbTmp.AddRow(0, new object[]
+                    {
+                        "Имя",
+                        "Оригинальность",
+                        "Беглость",
+                        "ГСем",
+                        "ГАсс"
+                    });
+                }
+
+                _ewbRes.SelectSheet(sheet);
+
+                PersonResult res = new PersonResult();
+
+                int c = 0;
+                while(_ewbRes.GetCell(c, 0).ToString() != "")
+                {
+                    string[] tmp = new string[10];
+                    for (int i = 0; i < 10; i++)
+                    {
+                        tmp[i] = _ewbRes.GetCell(c, i).ToString();
+                    }
+
+                    res.Name = tmp[0];
+                    res.Speed = int.Parse(tmp[1]);
+                    res.FSem = int.Parse(tmp[2]);
+                    res.FAss = int.Parse(tmp[3]);
+                    res.Group = sheet;
+
+                    List<WordInfo> words = new List<WordInfo>();
+
+                    for (int i = 0; i < 6; i++)
+                    {
+                        string[] w = tmp[4 + i].Split('@');
+                        foreach (var v in w)
+                        {
+                            var wi = getWord(_ewbFreq, v, _ewbRes.GetCell(0, 4 + i).ToString());
+                            words.Add(wi);
+                        }
+                    }
+
+                    PersonResult tmpres = Calculate(tmp[0], sheet, words);
+                    _ewbTmp.AddRow(0, tmpres.ToStringArray());
+
+                    c++;
+                }
+            }
         }
 
         public PersonResult Calculate(PersonResult[] results)

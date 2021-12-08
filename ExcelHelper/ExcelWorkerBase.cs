@@ -195,6 +195,7 @@ namespace ExcelHelper
             catch (Exception e)
             {
                 NewSheet(name);
+                throw;
             }
 
             SheetChanged?.Invoke();
