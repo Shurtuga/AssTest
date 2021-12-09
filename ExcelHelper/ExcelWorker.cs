@@ -61,6 +61,7 @@ namespace ExcelHelper
         {
             _ewbFreq.Close();
             _ewbRes.Close();
+            _ewbTmp?.Close();
 
             GC.Collect();
             KillExcel();
@@ -85,45 +86,51 @@ namespace ExcelHelper
         #region phases
         public void InputPhase()
         {
-            Task[] t = new Task[]
-            {
-                Task.Factory.StartNew(() =>
-                {
-                    _ewbRes = new ExcelWorkerBase();
-                    _ewbRes.Open(Path.GetFullPath(wordsRefPath));
-                }),
-                Task.Factory.StartNew(() =>
-                {
-                    _ewbFreq = new ExcelWorkerBase();
-                    _ewbFreq.Open(Path.GetFullPath(freqBookPath));
-                }),
-                Task.Factory.StartNew(() =>
-                {
-                    _ewbTmp?.Close();
-                })
-            };
-            Task.WaitAll(t);
+            //Task[] t = new Task[]
+            //{
+            //    Task.Factory.StartNew(() =>
+            //    {
+            //        _ewbRes = new ExcelWorkerBase();
+            //        _ewbRes.Open(Path.GetFullPath(wordsRefPath));
+            //    }),
+            //    Task.Factory.StartNew(() =>
+            //    {
+            //        _ewbFreq = new ExcelWorkerBase();
+            //        _ewbFreq.Open(Path.GetFullPath(freqBookPath));
+            //    }),
+            //    Task.Factory.StartNew(() =>
+            //    {
+            //        _ewbTmp?.Close();
+            //    })
+            //};
+            //Task.WaitAll(t);
 
-            //_ewbRes = new ExcelWorkerBase();
-            //_ewbRes.Open(Path.GetFullPath(wordsRefPath));
-            //_ewbFreq = new ExcelWorkerBase();
-            //_ewbFreq.Open(Path.GetFullPath(freqBookPath));
-            //_ewbTmp?.Close();
+            _ewbRes = new ExcelWorkerBase();
+            _ewbRes.Open(Path.GetFullPath(wordsRefPath));
+            _ewbFreq = new ExcelWorkerBase();
+            _ewbFreq.Open(Path.GetFullPath(freqBookPath));
+            _ewbTmp?.Close();
         }
         public void ResultReferencePhase()
         {
+            _ewbRes.Save();
+            _ewbFreq.Save();
+
             _ewbTmp?.Close();
             _ewbRes.Open(Path.GetFullPath(resultsRefPath));
             _ewbFreq.Open(Path.GetFullPath(freqBookPath));
         }
         public void ResultPhase()
         {
+            _ewbRes.Save();
+            _ewbFreq.Save();
+
             //await Task.Factory.StartNew(() => {
             //    _ewbTmp = new ExcelWorkerBase(resBookPath);
             //});
             _ewbTmp = new ExcelWorkerBase(Path.GetFullPath(resBookPath));
             _ewbRes.Open(Path.GetFullPath(resultsRefPath));
-            _ewbFreq.Open(Path.GetFullPath(wordsRefPath));
+            _ewbFreq.Open(Path.GetFullPath(freqBookPath));
         }
         #endregion
 
@@ -185,7 +192,7 @@ namespace ExcelHelper
             return new WordInfo()
             {
                 Association = _ewbFreq._worksheet.Name,
-                Word = _ewbFreq.GetCell(row, 0).ToString(),
+                Word = _ewbFreq.GetCell(row, 0).ToString().Trim(' '),
                 Frequency = int.Parse(_ewbFreq.GetCell(row, 1).ToString()),
                 FSem = int.Parse(_ewbFreq.GetCell(row, 2).ToString()),
                 FAss = int.Parse(_ewbFreq.GetCell(row, 3).ToString())
@@ -197,7 +204,7 @@ namespace ExcelHelper
             return new WordInfo()
             {
                 Association = ewb._worksheet.Name,
-                Word = ewb.GetCell(row, 0).ToString(),
+                Word = ewb.GetCell(row, 0).ToString().Trim(' '),
                 Frequency = int.Parse(ewb.GetCell(row, 1).ToString()),
                 FSem = int.Parse(ewb.GetCell(row, 2).ToString()),
                 FAss = int.Parse(ewb.GetCell(row, 3).ToString())
@@ -236,6 +243,7 @@ namespace ExcelHelper
                 }
                 else if (w == "")
                 {
+                    info.Frequency = 1;
                     ewb.AddRow(0, info.ToArray());
                     break;
                 }
@@ -311,7 +319,7 @@ namespace ExcelHelper
                 {
                     if (words[j].Association == ws[i].ToLower())
                     {
-                        sb.Append(words[j].Word + "@");
+                        sb.Append(words[j].Word.Trim(' ') + "@");
                     }
                 }
 
@@ -348,7 +356,7 @@ namespace ExcelHelper
 
                 PersonResult res = new PersonResult();
 
-                int c = 0;
+                int c = 1;
                 while(_ewbRes.GetCell(c, 0).ToString() != "")
                 {
                     string[] tmp = new string[10];
@@ -367,10 +375,10 @@ namespace ExcelHelper
 
                     for (int i = 0; i < 6; i++)
                     {
-                        string[] w = tmp[4 + i].Split('@');
+                        string[] w = tmp[4 + i].Split(new char[] { '@' }, StringSplitOptions.RemoveEmptyEntries);
                         foreach (var v in w)
                         {
-                            var wi = getWord(_ewbFreq, v, _ewbRes.GetCell(0, 4 + i).ToString());
+                            var wi = getWord(_ewbFreq, v, _ewbRes.GetCell(0, 4 + i).ToString().ToLower());
                             words.Add(wi);
                         }
                     }

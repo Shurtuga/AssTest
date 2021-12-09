@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AssociationTestVisual", "As
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelTesting", "ExcelTesting\ExcelTesting.csproj", "{007FB4DA-7104-4534-A13D-6DBA54E08FFA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestProject1", "UnitTestProject1\UnitTestProject1.csproj", "{961F6FB0-CB92-47A0-A826-06C4943C844A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{007FB4DA-7104-4534-A13D-6DBA54E08FFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{007FB4DA-7104-4534-A13D-6DBA54E08FFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{007FB4DA-7104-4534-A13D-6DBA54E08FFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{961F6FB0-CB92-47A0-A826-06C4943C844A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{961F6FB0-CB92-47A0-A826-06C4943C844A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{961F6FB0-CB92-47A0-A826-06C4943C844A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{961F6FB0-CB92-47A0-A826-06C4943C844A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

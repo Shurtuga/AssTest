@@ -32,7 +32,7 @@
 
         public string[] ToStringArray()
         {
-            return new string[] { Name, Speed.ToString(), Originality.ToString(), FAss.ToString(), FSem.ToString() };
+            return new string[] { Name, Originality.ToString(), Speed.ToString(), FSem.ToString(), FAss.ToString() };
         }
 
     }
