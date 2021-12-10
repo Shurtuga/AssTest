@@ -24,6 +24,7 @@ namespace AssociationTestVisual.VisualTabs
         public ResultWindow()
         {
             InitializeComponent();
+            
             FIOBox.Text = GLOBALS.GetPerson.Name;
             GroupBox.Text = GLOBALS.GetPerson.Group;
             SpeedBox.Text = GLOBALS.GetPerson.Speed.ToString();
@@ -34,11 +35,15 @@ namespace AssociationTestVisual.VisualTabs
 
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void SaveRef(object sender, RoutedEventArgs e)
         {
-            GLOBALS.Eww.SaveResult(GLOBALS.GetPerson);
+            GLOBALS.Eww.SaveResultRef(GLOBALS.GetPerson, GLOBALS.WordInfos);
             SaveButton.IsEnabled = false;
+        }
 
+        private void SaveAllButton_Click(object sender, RoutedEventArgs e)
+        {
+            GLOBALS.Eww.SaveAllResults();
         }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
@@ -59,5 +64,7 @@ namespace AssociationTestVisual.VisualTabs
             sw.Show();
             this.Close();
         }
+
+       
     }
 }

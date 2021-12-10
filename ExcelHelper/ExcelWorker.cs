@@ -113,8 +113,8 @@ namespace ExcelHelper
         }
         public void ResultReferencePhase()
         {
-            _ewbRes.Save();
-            _ewbFreq.Save();
+            _ewbRes?.Save();
+            _ewbFreq?.Save();
 
             _ewbTmp?.Close();
             _ewbRes.Open(Path.GetFullPath(resultsRefPath));
