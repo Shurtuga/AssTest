@@ -37,18 +37,24 @@ namespace AssociationTestVisual.VisualTabs
 
         private void SaveRef(object sender, RoutedEventArgs e)
         {
+            foreach (var v in GLOBALS.WordInfos) { GLOBALS.Eww.AddWord(v); }
+
+            GLOBALS.Eww.ResultReferencePhase();
+
             GLOBALS.Eww.SaveResultRef(GLOBALS.GetPerson, GLOBALS.WordInfos);
             SaveButton.IsEnabled = false;
         }
 
         private void SaveAllButton_Click(object sender, RoutedEventArgs e)
         {
+            GLOBALS.Eww.ResultPhase();
+
             GLOBALS.Eww.SaveAllResults();
         }
 
-        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            foreach (var v in GLOBALS.WordInfos) { await GLOBALS.Eww.AddWordAsync(v); }
+            
         }
 
         private void RestartButton_Click(object sender, RoutedEventArgs e)

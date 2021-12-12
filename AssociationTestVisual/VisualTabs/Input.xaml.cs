@@ -40,13 +40,13 @@ namespace AssociationTestVisual.VisualTabs
         }
 
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private async void Button_Click(object sender, RoutedEventArgs e)
         {
             for (int i = 0; i<Tabs.Items.Count; i++)
             {
                 if (((MyTabItem)Tabs.Items[i]).UnsortedList.Items.Count !=0||((MyTabItem)Tabs.Items[i]).UnsortedAssList.Items.Count !=0) { MessageBox.Show("Необходимо распределить ассоциации к слову "+((MyTabItem)Tabs.Items[i]).InWord); return; }
             }
-            GLOBALS.Eww.ResultReferencePhase();
+
             ResultWindow rw = new ResultWindow();//сюда передать итоговый резалт
             rw.Show();
             this.Close();

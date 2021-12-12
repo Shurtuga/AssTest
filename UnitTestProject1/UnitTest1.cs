@@ -56,7 +56,7 @@ namespace UnitTestProject1
 
             ew.ResultReferencePhase();
 
-            ew.SaveResultRef(new PersonResult { Name = "bob2", Group = "beebe2", FAss = 2, FSem = 2, Speed = 2, Originality = 1 }, ws);
+            ew.SaveResultRef(new PersonResult { Name = "bob2", Group = "beebe3", FAss = 2, FSem = 2, Speed = 2, Originality = 1 }, ws);
 
             //foreach (var i in pr.ToStringArray())
             //{

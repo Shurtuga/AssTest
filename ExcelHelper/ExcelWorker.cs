@@ -27,23 +27,11 @@ namespace ExcelHelper
         string resultsRefPath = System.Configuration.ConfigurationManager.AppSettings["resultsRefPath"];
 
 
-
-        string _resultsBook;
-        string _freqBook;
-
         ExcelWorkerBase _ewbFreq;
         ExcelWorkerBase _ewbRes;
         ExcelWorkerBase _ewbTmp;
 
         #region ctors
-        public ExcelWorker(string path)
-        {
-            _resultsBook = System.IO.Path.GetFullPath(resBookPath);
-            _freqBook = System.IO.Path.GetFullPath(freqBookPath);
-
-            _ewbFreq = new ExcelWorkerBase(_freqBook);
-            _ewbRes = new ExcelWorkerBase(_resultsBook);
-        }
         public ExcelWorker()
         {
             //_resultsBook = System.IO.Path.GetFullPath(resBookPath);
@@ -105,6 +93,10 @@ namespace ExcelHelper
             //};
             //Task.WaitAll(t);
 
+            _ewbFreq?.Save();
+            _ewbRes?.Save();
+            _ewbTmp?.Save();
+
             _ewbRes = new ExcelWorkerBase();
             _ewbRes.Open(Path.GetFullPath(wordsRefPath));
             _ewbFreq = new ExcelWorkerBase();
@@ -118,7 +110,7 @@ namespace ExcelHelper
 
             _ewbTmp?.Close();
             _ewbRes.Open(Path.GetFullPath(resultsRefPath));
-            _ewbFreq.Open(Path.GetFullPath(freqBookPath));
+            //_ewbFreq.Open(Path.GetFullPath(freqBookPath));
         }
         public void ResultPhase()
         {
@@ -182,22 +174,22 @@ namespace ExcelHelper
             return ParseRow(ewb, association, c);
         }
 
-        WordInfo ParseRow(int row)
-        {
-            string t1 = _ewbFreq.GetCell(row, 0).ToString();
-            string t2 = _ewbFreq.GetCell(row, 1).ToString();
-            string t3 = _ewbFreq.GetCell(row, 2).ToString();
-            string t4 = _ewbFreq.GetCell(row, 3).ToString();
+        //WordInfo ParseRow(int row)
+        //{
+        //    string t1 = _ewbFreq.GetCell(row, 0).ToString();
+        //    string t2 = _ewbFreq.GetCell(row, 1).ToString();
+        //    string t3 = _ewbFreq.GetCell(row, 2).ToString();
+        //    string t4 = _ewbFreq.GetCell(row, 3).ToString();
 
-            return new WordInfo()
-            {
-                Association = _ewbFreq._worksheet.Name,
-                Word = _ewbFreq.GetCell(row, 0).ToString().Trim(' '),
-                Frequency = int.Parse(_ewbFreq.GetCell(row, 1).ToString()),
-                FSem = int.Parse(_ewbFreq.GetCell(row, 2).ToString()),
-                FAss = int.Parse(_ewbFreq.GetCell(row, 3).ToString())
-            };
-        }
+        //    return new WordInfo()
+        //    {
+        //        Association = _ewbFreq._worksheet.Name,
+        //        Word = _ewbFreq.GetCell(row, 0).ToString().Trim(' '),
+        //        Frequency = int.Parse(_ewbFreq.GetCell(row, 1).ToString()),
+        //        FSem = int.Parse(_ewbFreq.GetCell(row, 2).ToString()),
+        //        FAss = int.Parse(_ewbFreq.GetCell(row, 3).ToString())
+        //    };
+        //}
         WordInfo ParseRow(ExcelWorkerBase ewb, string sheet, int row)
         {
             ewb.SelectSheet(sheet);

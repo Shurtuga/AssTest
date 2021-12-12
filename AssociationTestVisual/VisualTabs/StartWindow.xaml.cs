@@ -15,7 +15,7 @@ namespace AssociationTestVisual.VisualTabs
     public partial class StartWindow : Window
     {
         public StartWindow()
-        {
+       {
             InitializeComponent();
             GLOBALS.Groups = new GroupsList();
             //Groups.List.Add("TestGroup");

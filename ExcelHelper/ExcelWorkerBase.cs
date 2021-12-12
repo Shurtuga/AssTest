@@ -37,6 +37,7 @@ namespace ExcelHelper
             {
                 _excel = new Application();
                 _workbook = _excel.Workbooks.Open(path);
+                this._path = path;
 
                 Loaded?.Invoke();
             }
@@ -126,6 +127,7 @@ namespace ExcelHelper
         public void SaveAs(string path)
         {
             _workbook.SaveAs(path);
+            this._path = path;
         }
         #endregion
 
@@ -251,6 +253,8 @@ namespace ExcelHelper
             {
                 NewFile(path);
             }
+
+            this._path = path;
 
             Opened?.Invoke();
         }

@@ -13,6 +13,8 @@ namespace AssociationTestVisual.VisualTabs
     {
         public List<string> List;
 
+        string groupsPath = Path.GetFullPath(System.Configuration.ConfigurationManager.AppSettings["groups"]);
+
         public GroupsList()
         {
             List = new List<string>();
@@ -21,7 +23,7 @@ namespace AssociationTestVisual.VisualTabs
         {
             try
             {
-                using (var stream = new FileStream(System.Configuration.ConfigurationManager.AppSettings["groups"], FileMode.OpenOrCreate))
+                using (var stream = new FileStream(groupsPath, FileMode.OpenOrCreate))
                 {
                     XmlSerializer serializer = new XmlSerializer(typeof(List<string>));
                     List = (List<string>)serializer.Deserialize(stream);
@@ -35,7 +37,7 @@ namespace AssociationTestVisual.VisualTabs
 
         public void Save()
         {
-            using (var stream = new FileStream(System.Configuration.ConfigurationManager.AppSettings["groups"], FileMode.OpenOrCreate))
+            using (var stream = new FileStream(groupsPath, FileMode.OpenOrCreate))
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(List<string>));
                 serializer.Serialize(stream, List);
@@ -51,6 +53,8 @@ namespace AssociationTestVisual.VisualTabs
 
     public class WordsList
     {
+        string wordsPath = Path.GetFullPath(System.Configuration.ConfigurationManager.AppSettings["words"]);
+
         public static List<string> assTypes = new List<string>() {"Ассоциации по сходству", "Ассоциация по контрасту", 
             "Ассоциация по смежности в пространстве или времени", "Причинно-следственная ассоциация", "Ассоциация целое-часть",
             "Ассоциация-определение", "Сложнопонимаемая ассоциация", "Свойство, материал" };
@@ -62,7 +66,7 @@ namespace AssociationTestVisual.VisualTabs
 
         public void Save()
         {
-            using (var stream = new FileStream(System.Configuration.ConfigurationManager.AppSettings["words"], FileMode.OpenOrCreate))
+            using (var stream = new FileStream(wordsPath, FileMode.OpenOrCreate))
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(WordsList), new[] {typeof(AssociationWord) } );
                 serializer.Serialize(stream, this);
@@ -70,7 +74,7 @@ namespace AssociationTestVisual.VisualTabs
         }
         public void Load()
         {
-            using (var stream = new FileStream(System.Configuration.ConfigurationManager.AppSettings["words"], FileMode.OpenOrCreate))
+            using (var stream = new FileStream(wordsPath, FileMode.OpenOrCreate))
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(WordsList), new[] { typeof(AssociationWord) });
                 WordsList wl = (WordsList)serializer.Deserialize(stream);
