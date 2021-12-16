@@ -47,7 +47,7 @@ namespace AssociationTestVisual.VisualTabs
                 if (((MyTabItem)Tabs.Items[i]).UnsortedList.Items.Count !=0||((MyTabItem)Tabs.Items[i]).UnsortedAssList.Items.Count !=0) { MessageBox.Show("Необходимо распределить ассоциации к слову "+((MyTabItem)Tabs.Items[i]).InWord); return; }
             }
 
-            ResultWindow rw = new ResultWindow();//сюда передать итоговый резалт
+            ResultWindow rw = new ResultWindow();
             rw.Show();
             this.Close();
         }

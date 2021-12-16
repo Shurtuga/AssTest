@@ -86,19 +86,11 @@ namespace AssociationTestVisual.VisualTabs
 
         private async void SemEnterWord(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Return)
+            if (e.Key == Key.Return && WordsInput.Text.Trim().Length!=0)
             {
-                //если незнакомое слово
-
                 string word = WordsInput.Text;
                 WordsInput.Text = "";
-                //var gr = Eww.GetWordAsync(inpts[i].Text, tabs[i].Header.ToString());
-                //var r = await gr;
                 GLOBALS.WordInfos.Add(await GLOBALS.Eww.GetWordAsync(word, InWord));
-
-                //wordInfos.Add(r);
-                //wordInfos.Add(Eww.GetWord(inpts[i].Text, tabs[i].Header.ToString()));
-
                 if (GLOBALS.WordInfos.Last().FSem !=-1)
                 {
                     //добавление в выбранную категорию

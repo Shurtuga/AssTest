@@ -6,33 +6,37 @@
         xmlns:local="clr-namespace:AssociationTestVisual.VisualTabs"
         mc:Ignorable="d"
         Title="Тест на ассоциации" Height="453" Width="866" Loaded="Window_Loaded">
-    <Grid Margin="5,5,5,10">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="399*"/>
-            <ColumnDefinition Width="401*"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="377*"/>
-            <RowDefinition Height="40*"/>
-        </Grid.RowDefinitions>
-        <Button Name ="RestartButton" FontSize="20" Grid.Row="1" Width="137" HorizontalAlignment="Left" Grid.Column="1" Content="Начать заново" Click="RestartButton_Click" Margin="272,5,0,5"  />
-        <Button Name="SaveButton" FontSize="20" Grid.Row="1" Width="206" HorizontalAlignment="Left" Click="SaveRef" Content="Сохранить результат" Margin="0,4,0,4" />
-        <Button Name="SaveAllButton" FontSize="20" Grid.Row="1" Grid.Column="1" Width="247" HorizontalAlignment="Left" Click="SaveAllButton_Click" Content="Завершить тестирование" Margin="10,4,0,4"/>
-        <StackPanel Grid.Column="0" VerticalAlignment="Center" Grid.ColumnSpan="2" Height="159" Margin="0,0,414,0">
-            <TextBlock Text="ФИО" FontSize="20"/>
-            <TextBlock Text="Группа" FontSize="20"/>
-            <TextBlock Text="Беглость" FontSize="20"/>
-            <TextBlock Text="Оригинальность" FontSize="20"/>
-            <TextBlock Text="Семантическая гибкость" FontSize="20"/>
-            <TextBlock Text="Ассоциативная гибкость" FontSize="20"/>
-        </StackPanel>
-        <StackPanel Grid.Column="1" VerticalAlignment="Center" Height="159">
-            <TextBlock x:Name="FIOBox" Text="ФИО" FontSize="20"/>
-            <TextBlock x:Name="GroupBox" Text="Группа" FontSize="20"/>
-            <TextBlock x:Name="SpeedBox" Text="Беглость" FontSize="20"/>
-            <TextBlock x:Name="OriginalityBox" Text="Оригинвальность" FontSize="20"/>
-            <TextBlock x:Name="FsemBox" Text="Семантическая гибкость" FontSize="20"/>
-            <TextBlock x:Name="FassBox" Text="Ассоциативная гибкость" FontSize="20"/>
-        </StackPanel>
-    </Grid>
+    <DockPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+        <Grid Name ="Gbox"  Margin="20" DockPanel.Dock="Top" Visibility="Hidden">
+            <ProgressBar Minimum="0" Maximum="100" Height ="30" Name="pbStatus" IsIndeterminate="True" />
+            <TextBlock Text="Обработка результатов..." HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" />
+        </Grid>
+        <Grid Margin="5,5,5,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="399*"/>
+                <ColumnDefinition Width="401*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="151*"/>
+                <RowDefinition Height="25*"/>
+            </Grid.RowDefinitions>
+            <Button Name ="RestartButton" FontSize="20" Grid.Row="1" Width="137" HorizontalAlignment="Left" Grid.Column="1" Content="Начать заново" Click="RestartButton_Click" Margin="272,5,0,5"  />
+            <Button Name="SaveButton" FontSize="20" Grid.Row="1" Width="206" HorizontalAlignment="Left" Click="SaveRef" Content="Сохранить результат" Margin="0,4,0,4" />
+            <Button Name="SaveAllButton" FontSize="20" Grid.Row="1" Grid.Column="1" Width="247" HorizontalAlignment="Left" Click="SaveAllButton_Click" Content="Завершить проверку" Margin="10,4,0,4"/>
+            <StackPanel Grid.Column="0" VerticalAlignment="Center" Grid.ColumnSpan="2" Height="159" Margin="20,0,414,0">
+                <TextBlock Text="ФИО" FontSize="20"/>
+                <TextBlock Text="Группа" FontSize="20"/>
+                <TextBlock Text="Беглость" FontSize="20"/>
+                <TextBlock Text="Семантическая гибкость" FontSize="20"/>
+                <TextBlock Text="Ассоциативная гибкость" FontSize="20"/>
+            </StackPanel>
+            <StackPanel Grid.Column="1" VerticalAlignment="Center" Height="159">
+                <TextBlock x:Name="FIOBox" Text="ФИО" FontSize="20"/>
+                <TextBlock x:Name="GroupBox" Text="Группа" FontSize="20"/>
+                <TextBlock x:Name="SpeedBox" Text="Беглость" FontSize="20"/>
+                <TextBlock x:Name="FsemBox" Text="Семантическая гибкость" FontSize="20"/>
+                <TextBlock x:Name="FassBox" Text="Ассоциативная гибкость" FontSize="20"/>
+            </StackPanel>
+        </Grid>
+    </DockPanel>
 </Window>

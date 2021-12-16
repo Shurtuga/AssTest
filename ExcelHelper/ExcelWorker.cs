@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 using System.IO;
+using System.Threading;
 
 namespace ExcelHelper
 {
@@ -17,7 +18,7 @@ namespace ExcelHelper
         public Dictionary<string, List<string>> Words { get; private set; }
         public Dictionary<string, List<string>> ResRefs { get; private set; }
 
-
+        public event EventHandler ExcelLoaded;
 
         //string _resultsBook = System.IO.Path.GetFullPath(@"..\..\ExcelTables\Результаты.xlsx");
         //string _freqBook = System.IO.Path.GetFullPath(@"..\..\ExcelTables\Частоты.xlsx");
@@ -123,6 +124,12 @@ namespace ExcelHelper
             {
                 _ewb.Open(wordsRefPath);
             }
+            ExcelLoaded?.Invoke(this, EventArgs.Empty);
+        }
+
+        public async void InputPhaseAsync()
+        {
+            await Task.Factory.StartNew(InputPhase);
         }
         public void ResultReferencePhase()
         {

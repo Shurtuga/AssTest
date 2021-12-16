@@ -18,11 +18,14 @@ namespace AssociationTestVisual.VisualTabs
        {
             InitializeComponent();
             GLOBALS.Groups = new GroupsList();
-            //Groups.List.Add("TestGroup");
-            //Groups.Save();
             GLOBALS.Groups.Load();
-            GLOBALS.Eww = new ExcelWorker();
-            GLOBALS.Eww.InputPhase();
+            if (GLOBALS.Eww==null)
+            {
+                GLOBALS.Eww = new ExcelWorker();
+                GLOBALS.Eww.ExcelLoaded+=(s, e) => { Dispatcher.Invoke(() => { ContinueButton.IsEnabled = true; ContinueButton.Content = "Продолжить"; }); };
+            }
+            else { ContinueButton.IsEnabled = true; ContinueButton.Content = "Продолжить"; }
+            GLOBALS.Eww.InputPhaseAsync();
             FillGroups();
         }
 
@@ -53,16 +56,6 @@ namespace AssociationTestVisual.VisualTabs
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            
-            //if (GLOBALS.Eww == null)
-            //{
-            //    ContinueButton.IsEnabled = false;
-            //    await Task.Factory.StartNew(() =>
-            //    {
-            //        GLOBALS.Eww = new ExcelWorker();
-            //        Dispatcher.Invoke(() => { ContinueButton.IsEnabled = true; });
-            //    });
-            //}
         }
 
         private void ContinueButton_Click(object sender, RoutedEventArgs e)
@@ -79,7 +72,6 @@ namespace AssociationTestVisual.VisualTabs
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            //Dispatcher.Invoke(()=> { GLOBALS.Eww?.Close(); });
         }
 
         

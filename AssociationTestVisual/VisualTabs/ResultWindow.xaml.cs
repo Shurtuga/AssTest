@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -24,13 +25,13 @@ namespace AssociationTestVisual.VisualTabs
         public ResultWindow()
         {
             InitializeComponent();
-            
-            FIOBox.Text = GLOBALS.GetPerson.Name;
-            GroupBox.Text = GLOBALS.GetPerson.Group;
-            SpeedBox.Text = GLOBALS.GetPerson.Speed.ToString();
-            OriginalityBox.Text = GLOBALS.GetPerson.Originality.ToString();
-            FassBox.Text = GLOBALS.GetPerson.FAss.ToString();
-            FsemBox.Text = GLOBALS.GetPerson.FSem.ToString();
+
+            var personres = GLOBALS.Eww.Calculate(GLOBALS.GetPerson.Name, GLOBALS.GetPerson.Group, GLOBALS.WordInfos);
+            FIOBox.Text = personres.Name;
+            GroupBox.Text = personres.Group;
+            SpeedBox.Text = personres.Speed.ToString();
+            FassBox.Text = personres.FAss.ToString();
+            FsemBox.Text = personres.FSem.ToString();
         }
 
         private void SaveRef(object sender, RoutedEventArgs e)
@@ -46,18 +47,27 @@ namespace AssociationTestVisual.VisualTabs
             });
         }
 
-        private void SaveAllButton_Click(object sender, RoutedEventArgs e)
+        private async void SaveAllButton_Click(object sender, RoutedEventArgs e)
         {
-            GLOBALS.Eww.ResultPhase();
+            if (MessageBox.Show("Вы планируете завершить тестирование.\nЕсли вы нажмёте \"Да\", то вы потеряете возможность продолжать проверку данного тестирования.", "Внимание!", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                SaveAllButton.IsEnabled = false;
+                Gbox.Visibility = Visibility.Visible;
+                await Task.Factory.StartNew(() =>
+                {
+                    GLOBALS.Eww.ResultPhase();
+                    GLOBALS.Eww.SaveAllResults();
+                    Dispatcher.Invoke(() => Gbox.Visibility = Visibility.Hidden);
+                });
+                GLOBALS.Groups.List.Clear();
+            }
 
-            GLOBALS.Eww.SaveAllResults();
 
-            SaveAllButton.IsEnabled = false;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            
+
         }
 
         private void RestartButton_Click(object sender, RoutedEventArgs e)
@@ -74,6 +84,6 @@ namespace AssociationTestVisual.VisualTabs
             this.Close();
         }
 
-       
+
     }
 }
