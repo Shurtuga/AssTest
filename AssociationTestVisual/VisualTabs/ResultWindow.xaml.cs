@@ -31,21 +31,19 @@ namespace AssociationTestVisual.VisualTabs
             OriginalityBox.Text = GLOBALS.GetPerson.Originality.ToString();
             FassBox.Text = GLOBALS.GetPerson.FAss.ToString();
             FsemBox.Text = GLOBALS.GetPerson.FSem.ToString();
-
-
         }
 
         private void SaveRef(object sender, RoutedEventArgs e)
         {
-            foreach (var v in GLOBALS.WordInfos) { GLOBALS.Eww.AddWord(v); }
-
-            Task task = Task.Factory.StartNew(() =>
+            Dispatcher.Invoke(() =>
             {
+                foreach (var v in GLOBALS.WordInfos) { GLOBALS.Eww.AddWord(v); }
+
                 GLOBALS.Eww.ResultReferencePhase();
 
                 GLOBALS.Eww.SaveResultRef(GLOBALS.GetPerson, GLOBALS.WordInfos);
+                SaveButton.IsEnabled = false;
             });
-            SaveButton.IsEnabled = false;
         }
 
         private void SaveAllButton_Click(object sender, RoutedEventArgs e)
@@ -53,6 +51,8 @@ namespace AssociationTestVisual.VisualTabs
             GLOBALS.Eww.ResultPhase();
 
             GLOBALS.Eww.SaveAllResults();
+
+            SaveAllButton.IsEnabled = false;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -66,7 +66,7 @@ namespace AssociationTestVisual.VisualTabs
             {
                 if (MessageBox.Show("Вы не сохранили результат! Сохранить?", "Внимание!", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
-                    GLOBALS.Eww.SaveResult(GLOBALS.GetPerson);
+                    GLOBALS.Eww.SaveResultRef(GLOBALS.GetPerson, GLOBALS.WordInfos);
                 }
             }
             StartWindow sw = new StartWindow();

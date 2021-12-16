@@ -12,5 +12,13 @@
         {
             return new object[] {Word, Frequency, FSem, FAss };
         }
+        public string[] ToStringArray()
+        {
+            return new string[] { Word, Frequency.ToString(), FSem.ToString(), FAss.ToString() };
+        }
+        public override string ToString()
+        {
+            return Word + "#" + Frequency.ToString() + "#" + FSem.ToString() + "#" + FAss.ToString();
+        }
     }
 }
