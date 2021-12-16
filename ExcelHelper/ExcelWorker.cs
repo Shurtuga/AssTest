@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 using System.IO;
 
@@ -13,6 +14,11 @@ namespace ExcelHelper
     /// </summary>
     public class ExcelWorker : IDBWorker, IDisposable
     {
+        public Dictionary<string, List<string>> Words { get; private set; }
+        public Dictionary<string, List<string>> ResRefs { get; private set; }
+
+
+
         //string _resultsBook = System.IO.Path.GetFullPath(@"..\..\ExcelTables\Результаты.xlsx");
         //string _freqBook = System.IO.Path.GetFullPath(@"..\..\ExcelTables\Частоты.xlsx");
 
@@ -27,29 +33,64 @@ namespace ExcelHelper
         string resultsRefPath = System.Configuration.ConfigurationManager.AppSettings["resultsRefPath"];
 
 
-        ExcelWorkerBase _ewbFreq;
-        ExcelWorkerBase _ewbRes;
-        ExcelWorkerBase _ewbTmp;
+        ExcelWorkerBase _ewb;
+        //ExcelWorkerBase _ewbRes;
 
         #region ctors
         public ExcelWorker()
         {
-            //_resultsBook = System.IO.Path.GetFullPath(resBookPath);
-            //_freqBook = System.IO.Path.GetFullPath(freqBookPath);
+            try
+            {
+                var jsonString = File.ReadAllText(Path.GetFullPath(freqBookPath));
+                Words = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(jsonString);
+            }
+            catch (Exception)
+            {
+                Words = new Dictionary<string, List<string>>();
+                string[] ws =
+                {
+                "клетка",
+                "лист",
+                "дробь",
+                "ключ",
+                "порог",
+                "язык",
+                };
 
-            //_ewbFreq = new ExcelWorkerBase(System.IO.Path.GetFullPath(_freqBook));
-            //_ewbRes = new ExcelWorkerBase(System.IO.Path.GetFullPath(_resultsBook));
+                foreach (var w in ws)
+                {
+                    Words.Add(w, new List<string>(64));
+                }
+            }
 
-            InputPhase();
+            try
+            {
+                var jsonString = File.ReadAllText(Path.GetFullPath(resultsRefPath));
+                ResRefs = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(jsonString);
+            }
+            catch (Exception)
+            {
+                ResRefs = new Dictionary<string, List<string>>();
+            }
         }
         #endregion
 
-        #region !!!need to be removed
+        #region !!!closing
+        public void SaveJson()
+        {
+            var jsonString = JsonConvert.SerializeObject(Words, Formatting.Indented);
+            File.WriteAllText(Path.GetFullPath(freqBookPath), jsonString);
+
+            jsonString = JsonConvert.SerializeObject(ResRefs, Formatting.Indented);
+            File.WriteAllText(Path.GetFullPath(resultsRefPath), jsonString);
+        }
         public void Close()
         {
-            _ewbFreq.Close();
-            _ewbRes.Close();
-            _ewbTmp?.Close();
+            SaveJson();
+
+            _ewb.Close();
+            //_ewbRes.Close();
+            //_ewbTmp?.Close();
 
             GC.Collect();
             KillExcel();
@@ -74,66 +115,36 @@ namespace ExcelHelper
         #region phases
         public void InputPhase()
         {
-            //Task[] t = new Task[]
-            //{
-            //    Task.Factory.StartNew(() =>
-            //    {
-            //        _ewbRes = new ExcelWorkerBase();
-            //        _ewbRes.Open(Path.GetFullPath(wordsRefPath));
-            //    }),
-            //    Task.Factory.StartNew(() =>
-            //    {
-            //        _ewbFreq = new ExcelWorkerBase();
-            //        _ewbFreq.Open(Path.GetFullPath(freqBookPath));
-            //    }),
-            //    Task.Factory.StartNew(() =>
-            //    {
-            //        _ewbTmp?.Close();
-            //    })
-            //};
-            //Task.WaitAll(t);
-
-            _ewbFreq?.Save();
-            _ewbRes?.Save();
-            _ewbTmp?.Save();
-
-            _ewbRes = new ExcelWorkerBase();
-            _ewbRes.Open(Path.GetFullPath(wordsRefPath));
-            _ewbFreq = new ExcelWorkerBase();
-            _ewbFreq.Open(Path.GetFullPath(freqBookPath));
-            _ewbTmp?.Close();
+            if (_ewb == null)
+            {
+                _ewb = new ExcelWorkerBase(Path.GetFullPath(wordsRefPath)); 
+            }
+            else
+            {
+                _ewb.Open(wordsRefPath);
+            }
         }
         public void ResultReferencePhase()
         {
-            _ewbRes?.Save();
-            _ewbFreq?.Save();
-
-            _ewbTmp?.Close();
-            _ewbRes.Open(Path.GetFullPath(resultsRefPath));
-            //_ewbFreq.Open(Path.GetFullPath(freqBookPath));
+            
         }
         public void ResultPhase()
         {
-            _ewbRes.Save();
-            _ewbFreq.Save();
+            SaveJson();
 
-            //await Task.Factory.StartNew(() => {
-            //    _ewbTmp = new ExcelWorkerBase(resBookPath);
-            //});
-            _ewbTmp = new ExcelWorkerBase(Path.GetFullPath(resBookPath));
-            _ewbRes.Open(Path.GetFullPath(resultsRefPath));
-            _ewbFreq.Open(Path.GetFullPath(freqBookPath));
+            _ewb?.Save();
+
+            _ewb?.Open(Path.GetFullPath(resBookPath));
         }
         #endregion
 
         #region DBWorker Methods
         public WordInfo GetWord(string word, string association)
         {
-            return getWord(_ewbRes, word, association);
+            return getWord(_ewb, word, association);
         }
         private WordInfo getWord(ExcelWorkerBase ewb, string word, string association)
         {
-            //Open(_freqBook);
             try
             {
                 ewb.SelectSheet(association);
@@ -146,10 +157,6 @@ namespace ExcelHelper
 
             int c = 0;
             string w;
-            //while ((w = GetCell(c, 0).ToString().Trim(' '))!= word || (w == ""))
-            //{
-            //    c++;
-            //}
 
             for (; ; )
             {
@@ -174,22 +181,31 @@ namespace ExcelHelper
             return ParseRow(ewb, association, c);
         }
 
-        //WordInfo ParseRow(int row)
-        //{
-        //    string t1 = _ewbFreq.GetCell(row, 0).ToString();
-        //    string t2 = _ewbFreq.GetCell(row, 1).ToString();
-        //    string t3 = _ewbFreq.GetCell(row, 2).ToString();
-        //    string t4 = _ewbFreq.GetCell(row, 3).ToString();
+        private WordInfo getWord(List<string> words, string word)
+        {
+            for (int i = 0; i < words.Count; i++)
+            {
+                string[] ws = words[i].Split(new char[] { '#' }, StringSplitOptions.RemoveEmptyEntries);
 
-        //    return new WordInfo()
-        //    {
-        //        Association = _ewbFreq._worksheet.Name,
-        //        Word = _ewbFreq.GetCell(row, 0).ToString().Trim(' '),
-        //        Frequency = int.Parse(_ewbFreq.GetCell(row, 1).ToString()),
-        //        FSem = int.Parse(_ewbFreq.GetCell(row, 2).ToString()),
-        //        FAss = int.Parse(_ewbFreq.GetCell(row, 3).ToString())
-        //    };
-        //}
+                if (ws[0] == word)
+                {
+                    return new WordInfo()
+                    {
+                        Word = ws[0],
+                        Frequency = int.Parse(ws[1]),
+                        FSem = int.Parse(ws[2]),
+                        FAss = int.Parse(ws[3])
+                    };
+                }
+            }
+            return new WordInfo()
+            {
+                Word = word,
+                Frequency = 1,
+                FSem = -1,
+                FAss = -1
+            };
+        }
         WordInfo ParseRow(ExcelWorkerBase ewb, string sheet, int row)
         {
             ewb.SelectSheet(sheet);
@@ -205,12 +221,32 @@ namespace ExcelHelper
 
         public void AddWord(WordInfo info)
         {
-            addWord(_ewbRes, info);
-            addWord(_ewbFreq, info);
+            var words = Words[info.Association.ToLower()];
+
+            for (int i = 0; i < words.Count; i++)
+            {
+                string[] ws = words[i].Split(new char[] { '#' }, StringSplitOptions.RemoveEmptyEntries);
+
+                if (ws[0] == info.Word)
+                {
+                    int freq = int.Parse(ws[1]);
+
+                    ws[1] = (freq + 1).ToString();
+
+                    Words[info.Association.ToLower()][i] = String.Join("#", ws);
+
+
+                    return;
+                }
+            }
+
+            info.Frequency = 1;
+            Words[info.Association.ToLower()].Add(info.ToString());
+
+            //addWord(_ewb, info);
         }
         private void addWord(ExcelWorkerBase ewb, WordInfo info)
         {
-            //Open(_freqBook);
             try
             {
                 ewb.SelectSheet(info.Association);
@@ -245,45 +281,26 @@ namespace ExcelHelper
 
         public void SaveResult(PersonResult result)
         {
-            //Open(_resultsBook);
-            try
-            {
-                _ewbRes.SelectSheet(result.Group);
-            }
-            catch (Exception)
-            {
-                //_ewbRes.NewSheet(result.Group);
-                _ewbRes.SelectSheet(result.Group);
-                _ewbRes.AddRow(0, new object[] { "Имя", "Беглость", "Оригинальность", "ГСем", "ГАсс" });
-            }
+            //try
+            //{
+            //    _ewbRes.SelectSheet(result.Group);
+            //}
+            //catch (Exception)
+            //{
+            //    _ewbRes.SelectSheet(result.Group);
+            //    _ewbRes.AddRow(0, new object[] { "Имя", "Беглость", "Оригинальность", "ГСем", "ГАсс" });
+            //}
 
-            _ewbRes.AddRow(0, result.ToStringArray());
+            //_ewbRes.AddRow(0, result.ToStringArray());
         }
         public void SaveResultRef(PersonResult result, List<WordInfo> words)
         {
-            //Open(_resultsBook);
-            try
+            if (!ResRefs.ContainsKey(result.Group))
             {
-                _ewbRes.SelectSheet(result.Group);
+                ResRefs.Add(result.Group, new List<string>());
             }
-            catch (Exception)
-            {
-                //_ewbRes.NewSheet(result.Group);
-                _ewbRes.SelectSheet(result.Group);
-                _ewbRes.AddRow(0, new object[] 
-                { 
-                    "Имя", 
-                    "Беглость", 
-                    "ГСем", 
-                    "ГАсс", 
-                    "Клетка", 
-                    "Лист", 
-                    "Дробь",
-                    "Ключ",
-                    "Порог",
-                    "Язык", 
-                });
-            }
+
+            var pr = ResRefs[result.Group];
 
             string[] ws =
             {
@@ -303,38 +320,44 @@ namespace ExcelHelper
             res[2] = result.FAss.ToString();
             res[3] = result.FSem.ToString();
 
+            StringBuilder sb = new StringBuilder();
             for (int i = 0; i < 6; i++)
             {
-                StringBuilder sb = new StringBuilder();
-
                 for (int j = 0; j < words.Count; j++)
                 {
-                    if (words[j].Association == ws[i].ToLower())
+                    if (words[j].Association.ToLower() == ws[i].ToLower())
                     {
                         sb.Append(words[j].Word.Trim(' ') + "@");
                     }
                 }
 
                 res[4 + i] = sb.ToString();
+                sb.Clear();
             }
 
-            _ewbRes.AddRow(0, res);
+            sb.Clear();
+            for (int i = 0; i < 10; i++)
+            {
+                sb.Append(res[i].Trim(' ') + "#");
+            }
+
+            pr.Add(sb.ToString());
         }
 
         public void SaveAllResults()
         {
-            if (_ewbTmp == null) return;
+            if (_ewb == null) return;
 
-            foreach (var sheet in _ewbRes.GetSheetNames())
+            foreach (var key in ResRefs.Keys)
             {
                 try
                 {
-                    _ewbTmp.SelectSheet(sheet);
+                    _ewb.SelectSheet(key);
                 }
                 catch (Exception)
                 {
-                    _ewbTmp.SelectSheet(sheet);
-                    _ewbTmp.AddRow(0, new object[]
+                    _ewb.SelectSheet(key);
+                    _ewb.AddRow(0, new object[]
                     {
                         "Имя",
                         "Оригинальность",
@@ -344,24 +367,19 @@ namespace ExcelHelper
                     });
                 }
 
-                _ewbRes.SelectSheet(sheet);
+                var results = ResRefs[key];
 
                 PersonResult res = new PersonResult();
 
-                int c = 1;
-                while(_ewbRes.GetCell(c, 0).ToString() != "")
+                foreach (var r in ResRefs[key])
                 {
-                    string[] tmp = new string[10];
-                    for (int i = 0; i < 10; i++)
-                    {
-                        tmp[i] = _ewbRes.GetCell(c, i).ToString();
-                    }
+                    string[] tmp = r.Split(new char[] { '#' }, StringSplitOptions.RemoveEmptyEntries);
 
                     res.Name = tmp[0];
                     res.Speed = int.Parse(tmp[1]);
                     res.FSem = int.Parse(tmp[2]);
                     res.FAss = int.Parse(tmp[3]);
-                    res.Group = sheet;
+                    res.Group = key;
 
                     List<WordInfo> words = new List<WordInfo>();
 
@@ -370,15 +388,14 @@ namespace ExcelHelper
                         string[] w = tmp[4 + i].Split(new char[] { '@' }, StringSplitOptions.RemoveEmptyEntries);
                         foreach (var v in w)
                         {
-                            var wi = getWord(_ewbFreq, v, _ewbRes.GetCell(0, 4 + i).ToString().ToLower());
+                            var wi = getWord(Words.ElementAt(i).Value, v);
+                            wi.Association = Words.ElementAt(i).Key;
                             words.Add(wi);
                         }
                     }
 
-                    PersonResult tmpres = Calculate(tmp[0], sheet, words);
-                    _ewbTmp.AddRow(0, tmpres.ToStringArray());
-
-                    c++;
+                    PersonResult tmpres = Calculate(tmp[0], key, words);
+                    _ewb.AddRow(0, tmpres.ToStringArray());
                 }
             }
         }
@@ -525,11 +542,5 @@ namespace ExcelHelper
 
         #endregion
 
-        //~ExcelWorker()
-        //{
-        //    Console.WriteLine("ENDING HERE");
-        //    _ewbFreq.Close();
-        //    _ewbRes.Close();
-        //}
     }
 }
