@@ -39,9 +39,12 @@ namespace AssociationTestVisual.VisualTabs
         {
             foreach (var v in GLOBALS.WordInfos) { GLOBALS.Eww.AddWord(v); }
 
-            GLOBALS.Eww.ResultReferencePhase();
+            Task task = Task.Factory.StartNew(() =>
+            {
+                GLOBALS.Eww.ResultReferencePhase();
 
-            GLOBALS.Eww.SaveResultRef(GLOBALS.GetPerson, GLOBALS.WordInfos);
+                GLOBALS.Eww.SaveResultRef(GLOBALS.GetPerson, GLOBALS.WordInfos);
+            });
             SaveButton.IsEnabled = false;
         }
 

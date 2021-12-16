@@ -59,12 +59,29 @@ namespace AssociationTestVisual.VisualTabs
             string[] s = ((MenuItem)sender).Name.Split('_');
             if (((MenuItem)sender).Name=="Del")
             {
+                GLOBALS.WordInfos.RemoveAt(GLOBALS.WordInfos.FindIndex(t => t.Word == ((TextBlock)((ContextMenu)mnu.Parent).PlacementTarget).Text));
                 UnsortedList.Items.Remove((TextBlock)((ContextMenu)mnu.Parent).PlacementTarget);
+                for (int i = 0; i<UnsortedAssList.Items.Count; i++)
+                {
+                    if (((TextBlock)(UnsortedAssList.Items[i])).Text == ((TextBlock)((ContextMenu)mnu.Parent).PlacementTarget).Text)
+                    {
+                        UnsortedAssList.Items.RemoveAt(i);
+                        break;
+                    }
+                }
                 return;
             }
             //добавление в выбранную категорию
-            ((StackPanel)Category.Children[int.Parse(s[2])]).Children.Add(new TextBlock() { Text = ((TextBlock)((ContextMenu)mnu.Parent).PlacementTarget).Text, FontSize = 15, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center });
+            ((StackPanel)Category.Children[int.Parse(s[2])]).Children.Add(new TextBlock() { Text = ((TextBlock)((ContextMenu)mnu.Parent).PlacementTarget).Text, FontSize = 20, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center });
             UnsortedList.Items.Remove((TextBlock)((ContextMenu)mnu.Parent).PlacementTarget);
+            for (int i = 0; i< GLOBALS.WordInfos.Count; i++)
+            {
+                if (GLOBALS.WordInfos[i].Word == ((TextBlock)((ContextMenu)mnu.Parent).PlacementTarget).Text)
+                {
+                    GLOBALS.WordInfos[i].FSem = int.Parse(s[2])+1;
+                    break;
+                }
+            }
         }
 
         private async void SemEnterWord(object sender, KeyEventArgs e)
@@ -121,13 +138,31 @@ namespace AssociationTestVisual.VisualTabs
             MenuItem mnu = sender as MenuItem;
             if (((MenuItem)sender).Name=="Del")
             {
+                GLOBALS.WordInfos.RemoveAt(GLOBALS.WordInfos.FindIndex(t => t.Word == ((TextBlock)((ContextMenu)mnu.Parent).PlacementTarget).Text));
                 UnsortedAssList.Items.Remove((TextBlock)((ContextMenu)mnu.Parent).PlacementTarget);
+                for (int i = 0; i<UnsortedList.Items.Count; i++)
+                {
+                    if (((TextBlock)(UnsortedList.Items[i])).Text == ((TextBlock)((ContextMenu)mnu.Parent).PlacementTarget).Text)
+                    {
+                        UnsortedList.Items.RemoveAt(i);
+                        break;
+                    }
+                }
                 return;
             }
             string[] s = ((MenuItem)sender).Name.Split('_');
             //добавление в выбранную категорию!!!
-            ((StackPanel)AssCategory.Children[int.Parse(s[2])]).Children.Add(new TextBlock() { Text = ((TextBlock)((ContextMenu)mnu.Parent).PlacementTarget).Text, FontSize = 15, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center });
+            ((StackPanel)AssCategory.Children[int.Parse(s[2])]).Children.Add(new TextBlock() { Text = ((TextBlock)((ContextMenu)mnu.Parent).PlacementTarget).Text, FontSize = 20, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center });
             UnsortedAssList.Items.Remove((TextBlock)((ContextMenu)mnu.Parent).PlacementTarget);
+
+            for (int i = 0; i< GLOBALS.WordInfos.Count; i++)
+            {
+                if (GLOBALS.WordInfos[i].Word == ((TextBlock)((ContextMenu)mnu.Parent).PlacementTarget).Text)
+                {
+                    GLOBALS.WordInfos[i].FAss = int.Parse(s[2])+1;
+                    break;
+                }
+            }
         }
         #endregion
     }

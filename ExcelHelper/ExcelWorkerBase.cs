@@ -118,6 +118,7 @@ namespace ExcelHelper
         /// </summary>
         public void Save()
         {
+            _workbook.Saved = true;
             _workbook.Save();
         }
         /// <summary>

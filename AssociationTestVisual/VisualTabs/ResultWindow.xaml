@@ -5,20 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AssociationTestVisual.VisualTabs"
         mc:Ignorable="d"
-        Title="ResultWindow" Height="450" Width="800" Loaded="Window_Loaded">
-    <Grid Margin="20">
+        Title="Тест на ассоциации" Height="453" Width="866" Loaded="Window_Loaded">
+    <Grid Margin="5,5,5,10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="399*"/>
             <ColumnDefinition Width="401*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="405*"/>
-            <RowDefinition Height="29*"/>
+            <RowDefinition Height="377*"/>
+            <RowDefinition Height="40*"/>
         </Grid.RowDefinitions>
-        <Button Name ="RestartButton"  Grid.Row="1" Height="20" Width="137" HorizontalAlignment="Right" Grid.Column="1" Content="Начать заново" Click="RestartButton_Click"  />
-        <Button Name="SaveButton" Grid.Row="1" Height="20" Width="137" HorizontalAlignment="Left" Click="SaveRef" Content="Сохранить результат" Margin="0,3,0,3" />
-        <Button Name="SaveAllButton" Grid.Row="1" Grid.Column="1" Height="20" Width="150" HorizontalAlignment="Center" Click="SaveAllButton_Click" Content="Завершить тестирование" Margin="0,3,50,3"/>
-        <StackPanel Grid.Row="0" Grid.Column="0" VerticalAlignment="Center">
+        <Button Name ="RestartButton" FontSize="20" Grid.Row="1" Width="137" HorizontalAlignment="Left" Grid.Column="1" Content="Начать заново" Click="RestartButton_Click" Margin="272,5,0,5"  />
+        <Button Name="SaveButton" FontSize="20" Grid.Row="1" Width="206" HorizontalAlignment="Left" Click="SaveRef" Content="Сохранить результат" Margin="0,4,0,4" />
+        <Button Name="SaveAllButton" FontSize="20" Grid.Row="1" Grid.Column="1" Width="247" HorizontalAlignment="Left" Click="SaveAllButton_Click" Content="Завершить тестирование" Margin="10,4,0,4"/>
+        <StackPanel Grid.Column="0" VerticalAlignment="Center" Grid.ColumnSpan="2" Height="159" Margin="0,0,414,0">
             <TextBlock Text="ФИО" FontSize="20"/>
             <TextBlock Text="Группа" FontSize="20"/>
             <TextBlock Text="Беглость" FontSize="20"/>
@@ -26,7 +26,7 @@
             <TextBlock Text="Семантическая гибкость" FontSize="20"/>
             <TextBlock Text="Ассоциативная гибкость" FontSize="20"/>
         </StackPanel>
-        <StackPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Center">
+        <StackPanel Grid.Column="1" VerticalAlignment="Center" Height="159">
             <TextBlock x:Name="FIOBox" Text="ФИО" FontSize="20"/>
             <TextBlock x:Name="GroupBox" Text="Группа" FontSize="20"/>
             <TextBlock x:Name="SpeedBox" Text="Беглость" FontSize="20"/>

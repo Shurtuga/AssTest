@@ -5,24 +5,24 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AssociationTestVisual.VisualTabs"
         mc:Ignorable="d"
-        Title="Start" Height="450" Width="800" Loaded="Window_Loaded" Closing="Window_Closing" WindowStartupLocation="CenterScreen">
+        Title="Тест на ассоциации" Height="450" Width="800" Loaded="Window_Loaded" Closing="Window_Closing" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         
     </Window.Resources>
     <Grid Margin="0,0,0,2">
         <StackPanel VerticalAlignment="Center">
             <DockPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                <TextBlock Text="ФИО или ID тестируемого:" Margin="5" Width="310" HorizontalAlignment="Left" Height="35" FontSize="25"/>
+                <TextBlock Text="ID тестируемого:" Margin="5" Width="270" HorizontalAlignment="Left" Height="35" FontSize="25"/>
                 <TextBox Name="FIOBox" Margin="5" Width="310" HorizontalAlignment="Left" Height="35" FontSize="20"/>
             </DockPanel>
             <DockPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                <TextBlock Text="Группа тестируемого:" Width="310" Margin="10,0,0,0" HorizontalAlignment="Right" Height="35" FontSize="25"/>
+                <TextBlock Text="Группа тестируемого:" Width="270" Margin="10,0,0,0" HorizontalAlignment="Right" Height="35" FontSize="25"/>
                 <ComboBox Name="GROUPBox" Width="310" Margin="5" HorizontalAlignment="Right" Height="35" FontSize="25" HorizontalContentAlignment="Stretch"/>
             </DockPanel>
         </StackPanel>
         <Button x:Name="ContinueButton" Content="Продолжить" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Bottom" Width="200" Height="40" FontSize="25" Click="ContinueButton_Click"/>
         <Button Visibility="Hidden" x:Name="RedactButton" Content="Редактирование" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Bottom" Width="200" Height="40" FontSize="25"/>
-        <TextBlock x:Name="textBlock" Margin="5" HorizontalAlignment="Left" Text="Введите данные тестируемого" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="35"/>
+        <TextBlock x:Name="textBlock" Margin="10" HorizontalAlignment="Left" Text="Введите данные тестируемого" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="35"/>
 
     </Grid>
 </Window>
