@@ -20,14 +20,6 @@ namespace ExcelHelper
 
         public event EventHandler ExcelLoaded;
 
-        //string _resultsBook = System.IO.Path.GetFullPath(@"..\..\ExcelTables\Результаты.xlsx");
-        //string _freqBook = System.IO.Path.GetFullPath(@"..\..\ExcelTables\Частоты.xlsx");
-
-        //string _resultsBook = System.IO.Path.GetFullPath(
-        //    @"C:\Users\User\source\repos\associationstest\ExcelHelper\ExcelTables\Результаты.xlsx");
-        //string _freqBook = System.IO.Path.GetFullPath(
-        //    @"C:\Users\User\source\repos\associationstest\ExcelHelper\ExcelTables\Частоты.xlsx");
-
         string freqBookPath = System.Configuration.ConfigurationManager.AppSettings["freqBookPath"];
         string resBookPath = System.Configuration.ConfigurationManager.AppSettings["resBookPath"];
         string wordsRefPath = System.Configuration.ConfigurationManager.AppSettings["wordsRefPath"];
@@ -116,13 +108,15 @@ namespace ExcelHelper
         #region phases
         public void InputPhase()
         {
+            SaveJson();
+
             if (_ewb == null)
             {
                 _ewb = new ExcelWorkerBase(Path.GetFullPath(wordsRefPath)); 
             }
             else
             {
-                _ewb.Open(wordsRefPath);
+                _ewb.Open(Path.GetFullPath(wordsRefPath));
             }
             ExcelLoaded?.Invoke(this, EventArgs.Empty);
         }
@@ -162,7 +156,7 @@ namespace ExcelHelper
                 ewb.AddRow(0, new object[] { "Слово", "Частота", "ГСем", "ГАсс" });
             }
 
-            int c = 0;
+            int c = 1;
             string w;
 
             for (; ; )
@@ -264,7 +258,7 @@ namespace ExcelHelper
                 ewb.AddRow(0, new object[] { "Слово", "Частота", "ГСем", "ГАсс" });
             }
 
-            int c = 0;
+            int c = 1;
             string w;
 
             for (; ; )

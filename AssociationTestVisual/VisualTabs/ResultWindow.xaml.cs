@@ -76,7 +76,8 @@ namespace AssociationTestVisual.VisualTabs
             {
                 if (MessageBox.Show("Вы не сохранили результат! Сохранить?", "Внимание!", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
-                    GLOBALS.Eww.SaveResultRef(GLOBALS.GetPerson, GLOBALS.WordInfos);
+                    //GLOBALS.Eww.SaveResultRef(GLOBALS.GetPerson, GLOBALS.WordInfos);
+                    SaveRef(sender, e);
                 }
             }
             StartWindow sw = new StartWindow();
